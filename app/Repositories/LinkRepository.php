@@ -7,12 +7,12 @@ use App\Models\Post;
 use App\Models\Short;
 use Illuminate\Database\Eloquent\Model;
 
-class LinkRepository
+class LinkRepository implements LinkRepositoryInterface
 {
     /**
      * @param  Model|Post|Short  $model
      */
-    public static function updateLinksList(Model $model, array $urls): void
+    public function updateLinksList(Model $model, array $urls): void
     {
         $linkIds = [];
 

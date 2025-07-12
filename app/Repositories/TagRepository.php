@@ -6,9 +6,9 @@ use App\Constants;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
-class TagRepository
+class TagRepository implements TagRepositoryInterface
 {
-    public static function getUnique(): array
+    public function getUnique(): array
     {
         if (Cache::has(Constants::CACHE_UNIQUE_TAGS_KEY)) {
             return Cache::get(Constants::CACHE_UNIQUE_TAGS_KEY);

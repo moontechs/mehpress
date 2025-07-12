@@ -3,12 +3,14 @@
 namespace App\Observers;
 
 use App\Constants;
-use App\Helpers\LinkParser;
+use App\Helpers\LinkParserHelper;
 use App\Models\Post;
 use Illuminate\Support\Facades\Cache;
 
 class PostObserver
 {
+    public function __construct(protected readonly LinkParserHelper $linkParserHelper) {}
+
     public function created(Post $post): void
     {
         if (! empty($post->tags)) {
@@ -16,7 +18,7 @@ class PostObserver
         }
 
         if ($post->text) {
-            LinkParser::updateModelLinks($post, $post->text);
+            $this->linkParserHelper->updateModelLinks($post, $post->text);
         }
     }
 
@@ -30,7 +32,7 @@ class PostObserver
     public function updated(Post $post): void
     {
         if ($post->wasChanged('text')) {
-            LinkParser::updateModelLinks($post, $post->text);
+            $this->linkParserHelper->updateModelLinks($post, $post->text);
         }
     }
 

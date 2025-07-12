@@ -4,7 +4,7 @@ namespace App\Helpers;
 
 use Illuminate\Support\Str;
 
-class Slug
+class SlugHelper
 {
     public static function getForPost(string $string): string
     {

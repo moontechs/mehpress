@@ -3,12 +3,14 @@
 namespace App\Observers;
 
 use App\Constants;
-use App\Helpers\LinkParser;
+use App\Helpers\LinkParserHelper;
 use App\Models\Short;
 use Illuminate\Support\Facades\Cache;
 
 class ShortObserver
 {
+    public function __construct(protected readonly LinkParserHelper $linkParserHelper) {}
+
     public function created(Short $short): void
     {
         if (! empty($short->tags)) {
@@ -16,7 +18,7 @@ class ShortObserver
         }
 
         if ($short->text) {
-            LinkParser::updateModelLinks($short, $short->text);
+            $this->linkParserHelper->updateModelLinks($short, $short->text);
         }
     }
 
@@ -30,7 +32,7 @@ class ShortObserver
     public function updated(Short $short): void
     {
         if ($short->wasChanged('text')) {
-            LinkParser::updateModelLinks($short, $short->text);
+            $this->linkParserHelper->updateModelLinks($short, $short->text);
         }
     }
 

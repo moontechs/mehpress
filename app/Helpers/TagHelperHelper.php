@@ -2,13 +2,15 @@
 
 namespace App\Helpers;
 
-use App\Repositories\TagRepository;
+use App\Repositories\TagRepositoryInterface;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
-class Tag
+class TagHelperHelper implements TagHelperInterface
 {
-    public static function parseFromText(?string $text): array
+    public function __construct(protected readonly TagRepositoryInterface $repository) {}
+
+    public function parseFromText(?string $text): array
     {
         $matches = [];
         preg_match_all('/#\w+/', $text ?? '', $matches);
@@ -21,8 +23,8 @@ class Tag
         );
     }
 
-    public static function getSuggestions(): array
+    public function getSuggestions(): array
     {
-        return TagRepository::getUnique();
+        return $this->repository->getUnique();
     }
 }

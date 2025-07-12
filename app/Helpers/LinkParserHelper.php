@@ -4,17 +4,16 @@ namespace App\Helpers;
 
 use App\Models\Post;
 use App\Models\Short;
-use App\Repositories\LinkRepository;
+use App\Repositories\LinkRepositoryInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
-class LinkParser
+class LinkParserHelper implements LinkParserHelperInterface
 {
-    /**
-     * Extract URLs from text
-     */
-    public static function extractUrls(string $text): array
+    public function __construct(protected readonly LinkRepositoryInterface $linkRepository) {}
+
+    public function extractUrls(string $text): array
     {
         $pattern = '/\b(https?:\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/i';
         preg_match_all($pattern, $text, $matches);
@@ -27,14 +26,14 @@ class LinkParser
     /**
      * @param  Model|Post|Short  $model
      */
-    public static function updateModelLinks(Model $model, string $content): void
+    public function updateModelLinks(Model $model, string $content): void
     {
-        $urls = self::extractUrls($content);
+        $urls = $this->extractUrls($content);
 
         if (empty($urls)) {
             return;
         }
 
-        LinkRepository::updateLinksList($model, $urls);
+        $this->linkRepository->updateLinksList($model, $urls);
     }
 }

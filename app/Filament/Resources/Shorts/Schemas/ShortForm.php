@@ -2,8 +2,8 @@
 
 namespace App\Filament\Resources\Shorts\Schemas;
 
-use App\Helpers\Slug;
-use App\Helpers\Tag;
+use App\Helpers\SlugHelper;
+use App\Helpers\TagHelperInterface;
 use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\TextInput;
@@ -15,15 +15,17 @@ class ShortForm
 {
     public static function configure(Schema $schema): Schema
     {
+        $tagHelper = app()->make(TagHelperInterface::class);
+
         return $schema
             ->components([
                 MarkdownEditor::make('text')
                     ->columnSpanFull()
                     ->live()
                     ->partiallyRenderComponentsAfterStateUpdated(['slug', 'tags'])
-                    ->afterStateUpdated(function (Set $set, ?string $state) {
-                        $set('slug', Slug::getForShort($state));
-                        $set('tags', Arr::flatten(Tag::parseFromText($state)));
+                    ->afterStateUpdated(function (Set $set, ?string $state) use ($tagHelper) {
+                        $set('slug', SlugHelper::getForShort($state));
+                        $set('tags', Arr::flatten($tagHelper->parseFromText($state)));
                     })
                     ->required(),
                 TextInput::make('slug')

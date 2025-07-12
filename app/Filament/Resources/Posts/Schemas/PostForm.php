@@ -2,8 +2,8 @@
 
 namespace App\Filament\Resources\Posts\Schemas;
 
-use App\Helpers\Slug;
-use App\Helpers\Tag;
+use App\Helpers\SlugHelper;
+use App\Helpers\TagHelperInterface;
 use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\TextInput;
@@ -15,6 +15,8 @@ class PostForm
 {
     public static function configure(Schema $schema): Schema
     {
+        $tagHelper = app()->make(TagHelperInterface::class);
+
         return $schema
             ->components([
                 TextInput::make('title')
@@ -22,7 +24,7 @@ class PostForm
                     ->unique(ignoreRecord: true)
                     ->live()
                     ->partiallyRenderComponentsAfterStateUpdated(['slug'])
-                    ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Slug::getForPost($state)))
+                    ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', SlugHelper::getForPost($state)))
                     ->required(),
                 TextInput::make('slug')
                     ->columnSpanFull()
@@ -35,7 +37,7 @@ class PostForm
                     ->required()
                     ->columnSpanFull(),
                 TagsInput::make('tags')
-                    ->suggestions(Tag::getSuggestions())
+                    ->suggestions($tagHelper->getSuggestions())
                     ->columnSpanFull(),
                 Toggle::make('published')
                     ->default(false),
