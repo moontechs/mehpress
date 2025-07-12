@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Helpers\Slug;
+namespace App\Helpers;
 
 use Illuminate\Support\Str;
 

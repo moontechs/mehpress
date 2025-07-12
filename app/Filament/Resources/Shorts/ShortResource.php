@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Shorts;
 use App\Filament\Resources\Shorts\Pages\CreateShort;
 use App\Filament\Resources\Shorts\Pages\EditShort;
 use App\Filament\Resources\Shorts\Pages\ListShorts;
+use App\Filament\Resources\Shorts\RelationManagers\LinksRelationManager;
 use App\Filament\Resources\Shorts\Schemas\ShortForm;
 use App\Filament\Resources\Shorts\Tables\ShortsTable;
 use App\Models\Short;
@@ -33,7 +34,7 @@ class ShortResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            LinksRelationManager::class,
         ];
     }
 

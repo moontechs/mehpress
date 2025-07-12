@@ -2,8 +2,8 @@
 
 namespace App\Filament\Resources\Posts\Schemas;
 
-use App\Helpers\Slug\Slug;
-use App\Helpers\Tag\Tag;
+use App\Helpers\Slug;
+use App\Helpers\Tag;
 use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\TextInput;
@@ -27,6 +27,7 @@ class PostForm
                 TextInput::make('slug')
                     ->columnSpanFull()
                     ->unique(ignoreRecord: true)
+                    ->hint('It will be created automatically from a title')
                     ->required(),
                 TextInput::make('description')
                     ->columnSpanFull(),

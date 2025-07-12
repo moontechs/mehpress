@@ -13,7 +13,13 @@
 - Aim for "slim" Controllers and put larger logic pieces in Service classes
 - Use Laravel helpers instead of `use` section classes whenever possible. Examples: use `auth()->id()` instead of `Auth::id()` and adding `Auth` in the `use` section. Another example: use `redirect()->route()` instead of `Redirect::route()`.
 - In PHP, use `match` operator over `switch` whenever possible
-- Use Filament 4
+
+---
+
+## Filament instructions
+- Use Filament 4.
+- Use artisan commands to generate filament resources, relations, etc. 
+For example, `php artisan make:filament-resource ResourceName`, `php artisan make:filament-relation-manager ResourceName relation field`.
 
 ---
 

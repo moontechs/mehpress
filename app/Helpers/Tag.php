@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Helpers\Tag;
+namespace App\Helpers;
 
 use App\Repositories\TagRepository;
 use Illuminate\Support\Arr;

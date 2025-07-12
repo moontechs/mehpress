@@ -2,8 +2,8 @@
 
 namespace App\Filament\Resources\Shorts\Schemas;
 
-use App\Helpers\Slug\Slug;
-use App\Helpers\Tag\Tag;
+use App\Helpers\Slug;
+use App\Helpers\Tag;
 use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\TextInput;
@@ -27,10 +27,12 @@ class ShortForm
                     })
                     ->required(),
                 TextInput::make('slug')
+                    ->hint('It will be created automatically from a text')
                     ->columnSpanFull()
                     ->unique(ignoreRecord: true)
                     ->required(),
                 TagsInput::make('tags')
+                    ->hint('It will be added automatically from a text')
                     ->columnSpanFull(),
             ]);
     }

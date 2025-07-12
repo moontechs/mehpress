@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Constants;
+use App\Helpers\LinkParser;
 use App\Models\Short;
 use Illuminate\Support\Facades\Cache;
 
@@ -12,6 +13,10 @@ class ShortObserver
     {
         if (! empty($short->tags)) {
             Cache::forget(Constants::CACHE_UNIQUE_TAGS_KEY);
+        }
+
+        if ($short->text) {
+            LinkParser::updateModelLinks($short, $short->text);
         }
     }
 
@@ -24,7 +29,9 @@ class ShortObserver
 
     public function updated(Short $short): void
     {
-        //
+        if ($short->wasChanged('text')) {
+            LinkParser::updateModelLinks($short, $short->text);
+        }
     }
 
     public function deleted(Short $short): void

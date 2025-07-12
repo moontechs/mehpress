@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Constants;
+use App\Helpers\LinkParser;
 use App\Models\Post;
 use Illuminate\Support\Facades\Cache;
 
@@ -12,6 +13,10 @@ class PostObserver
     {
         if (! empty($post->tags)) {
             Cache::forget(Constants::CACHE_UNIQUE_TAGS_KEY);
+        }
+
+        if ($post->text) {
+            LinkParser::updateModelLinks($post, $post->text);
         }
     }
 
@@ -24,7 +29,9 @@ class PostObserver
 
     public function updated(Post $post): void
     {
-        //
+        if ($post->wasChanged('text')) {
+            LinkParser::updateModelLinks($post, $post->text);
+        }
     }
 
     public function deleted(Post $post): void
