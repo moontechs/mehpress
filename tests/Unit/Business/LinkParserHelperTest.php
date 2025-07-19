@@ -4,7 +4,6 @@ namespace Tests\Unit\Business;
 
 use App\Business\LinkParser;
 use App\Models\Post;
-use App\Models\Short;
 use App\Repositories\LinkRepositoryInterface;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Mockery;
@@ -68,26 +67,5 @@ class LinkParserHelperTest extends TestCase
         $linkRepository->shouldReceive('updateLinksList')->never();
 
         $linkParser->updateModelLinks($post, $content);
-    }
-
-    public function test_can_handle_both_post_and_short_models(): void
-    {
-        $linkRepository = Mockery::mock(LinkRepositoryInterface::class);
-        $linkParser = new LinkParser($linkRepository);
-
-        $post = Post::factory()->create();
-        $short = Short::factory()->create();
-        $content = 'Check out https://example.com and https://test.com';
-
-        $linkRepository->shouldReceive('updateLinksList')
-            ->once()
-            ->with($post, ['https://example.com', 'https://test.com']);
-
-        $linkRepository->shouldReceive('updateLinksList')
-            ->once()
-            ->with($short, ['https://example.com', 'https://test.com']);
-
-        $linkParser->updateModelLinks($post, $content);
-        $linkParser->updateModelLinks($short, $content);
     }
 }

@@ -20,6 +20,16 @@ class TagRepositoryTest extends TestCase
         parent::setUp();
         $this->repository = new TagRepository;
 
+        // Create a default blog for post foreign key
+        DB::table('blogs')->insert([
+            'id' => 1,
+            'name' => 'Default Blog',
+            'description' => 'Default',
+            'host' => 'https://example.com',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
         Cache::forget(Constants::CACHE_UNIQUE_TAGS_KEY);
     }
 
@@ -30,6 +40,7 @@ class TagRepositoryTest extends TestCase
             'slug' => 'post-1',
             'text' => 'Content',
             'tags' => json_encode(['laravel', 'php']),
+            'blog_id' => 1,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -39,25 +50,19 @@ class TagRepositoryTest extends TestCase
             'slug' => 'post-2',
             'text' => 'Content',
             'tags' => json_encode(['laravel', 'testing']),
+            'blog_id' => 1,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
 
-        DB::table('shorts')->insert([
-            'slug' => 'short-1',
-            'text' => 'Content',
-            'tags' => json_encode(['vuejs', 'laravel']),
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+        // shorts support removed, skip
 
         $tags = $this->repository->getUnique();
 
-        $this->assertCount(4, $tags);
+        $this->assertCount(3, $tags);
         $this->assertContains('laravel', $tags);
         $this->assertContains('php', $tags);
         $this->assertContains('testing', $tags);
-        $this->assertContains('vuejs', $tags);
     }
 
     public function test_get_unique_returns_empty_array_when_no_tags_exist(): void
@@ -67,17 +72,12 @@ class TagRepositoryTest extends TestCase
             'slug' => 'post-1',
             'text' => 'Content',
             'tags' => json_encode([]),
+            'blog_id' => 1,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
 
-        DB::table('shorts')->insert([
-            'slug' => 'short-1',
-            'text' => 'Content',
-            'tags' => json_encode([]),
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+        // no shorts table
 
         $tags = $this->repository->getUnique();
 
@@ -91,6 +91,7 @@ class TagRepositoryTest extends TestCase
             'slug' => 'post-1',
             'text' => 'Content',
             'tags' => json_encode(['laravel', 'php']),
+            'blog_id' => 1,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -102,6 +103,7 @@ class TagRepositoryTest extends TestCase
             'slug' => 'post-2',
             'text' => 'Content',
             'tags' => json_encode(['new-tag']),
+            'blog_id' => 1,
             'created_at' => now(),
             'updated_at' => now(),
         ]);

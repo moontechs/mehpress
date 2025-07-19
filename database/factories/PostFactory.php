@@ -16,6 +16,8 @@ class PostFactory extends Factory
             'slug' => fake()->slug(),
             'text' => fake()->paragraphs(3, true),
             'tags' => json_encode([]),
+            'description' => fake()->sentence(),
+            'blog_id' => \App\Models\Blog::factory(),
             'created_at' => now(),
             'updated_at' => now(),
         ];

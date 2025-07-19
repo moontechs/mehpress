@@ -4,7 +4,6 @@ namespace Tests\Unit\Repositories;
 
 use App\Models\Link;
 use App\Models\Post;
-use App\Models\Short;
 use App\Repositories\LinkRepository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -84,16 +83,5 @@ class LinkRepositoryTest extends TestCase
         $this->assertEquals($newUrls, $post->links->pluck('url')->toArray());
 
         $this->assertDatabaseHas('links', ['url' => 'https://test.org/page']);
-    }
-
-    public function test_update_links_list_works_with_short_model(): void
-    {
-        $short = Short::factory()->create();
-        $urls = ['https://example.com', 'https://test.org/page'];
-
-        $this->repository->updateLinksList($short, $urls);
-
-        $this->assertCount(2, $short->links);
-        $this->assertEquals($urls, $short->links->pluck('url')->toArray());
     }
 }
