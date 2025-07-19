@@ -16,4 +16,14 @@ class EditPost extends EditRecord
             DeleteAction::make(),
         ];
     }
+
+    protected function afterSave(): void
+    {
+        static::refreshFormData([
+            'tags',
+            'slug',
+            'title',
+            'description',
+        ]);
+    }
 }

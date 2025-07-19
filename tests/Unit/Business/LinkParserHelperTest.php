@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\Unit\Helpers;
+namespace Tests\Unit\Business;
 
-use App\Helpers\LinkParserHelper;
+use App\Business\LinkParser;
 use App\Models\Post;
 use App\Models\Short;
 use App\Repositories\LinkRepositoryInterface;
@@ -17,7 +17,7 @@ class LinkParserHelperTest extends TestCase
     public function test_can_extract_urls_from_text(): void
     {
         $linkRepository = Mockery::mock(LinkRepositoryInterface::class);
-        $linkParser = new LinkParserHelper($linkRepository);
+        $linkParser = new LinkParser($linkRepository);
 
         $text = 'Check out these websites: https://example.com and http://test.org/page and also https://github.com/';
 
@@ -33,7 +33,7 @@ class LinkParserHelperTest extends TestCase
     public function test_extract_urls_returns_empty_array_when_no_urls_in_text(): void
     {
         $linkRepository = Mockery::mock(LinkRepositoryInterface::class);
-        $linkParser = new LinkParserHelper($linkRepository);
+        $linkParser = new LinkParser($linkRepository);
 
         $text = 'This text contains no URLs';
 
@@ -45,7 +45,7 @@ class LinkParserHelperTest extends TestCase
     public function test_update_model_links_calls_repository_with_extracted_urls(): void
     {
         $linkRepository = Mockery::mock(LinkRepositoryInterface::class);
-        $linkParser = new LinkParserHelper($linkRepository);
+        $linkParser = new LinkParser($linkRepository);
 
         $post = Post::factory()->create();
         $content = 'Check out https://example.com';
@@ -60,7 +60,7 @@ class LinkParserHelperTest extends TestCase
     public function test_update_model_links_does_nothing_when_no_urls_found(): void
     {
         $linkRepository = Mockery::mock(LinkRepositoryInterface::class);
-        $linkParser = new LinkParserHelper($linkRepository);
+        $linkParser = new LinkParser($linkRepository);
 
         $post = Post::factory()->create();
         $content = 'No URLs here';
@@ -73,7 +73,7 @@ class LinkParserHelperTest extends TestCase
     public function test_can_handle_both_post_and_short_models(): void
     {
         $linkRepository = Mockery::mock(LinkRepositoryInterface::class);
-        $linkParser = new LinkParserHelper($linkRepository);
+        $linkParser = new LinkParser($linkRepository);
 
         $post = Post::factory()->create();
         $short = Short::factory()->create();

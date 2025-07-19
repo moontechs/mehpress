@@ -2,13 +2,10 @@
 
 namespace App\Models;
 
-use App\Observers\ShortObserver;
-use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-#[ObservedBy([ShortObserver::class])]
 /**
  * @mixin IdeHelperShort
  */
@@ -20,14 +17,21 @@ class Short extends Model
         'text',
         'tags',
         'slug',
+        'seo_tags',
     ];
 
     protected $casts = [
         'tags' => 'array',
+        'seo_tags' => 'array',
     ];
 
     public function links(): BelongsToMany
     {
         return $this->belongsToMany(Link::class);
+    }
+
+    public function getUrl(): string
+    {
+        return config('app.url').'/shorts/'.$this->slug;
     }
 }

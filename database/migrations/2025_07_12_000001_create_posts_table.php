@@ -15,7 +15,10 @@ return new class extends Migration
             $table->text('text');
             $table->text('slug')->unique();
             $table->text('tags')->nullable();
+            $table->jsonb('seo_tags')->default('{}');
             $table->boolean('published')->default(false);
+            $table->string('type')->default('post');
+            $table->foreignId('blog_id')->constrained('blogs')->cascadeOnDelete();
             $table->timestamps();
         });
     }

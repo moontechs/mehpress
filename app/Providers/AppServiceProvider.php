@@ -2,10 +2,12 @@
 
 namespace App\Providers;
 
-use App\Helpers\LinkParserHelper;
-use App\Helpers\LinkParserHelperInterface;
-use App\Helpers\TagHelperHelper;
-use App\Helpers\TagHelperInterface;
+use App\Business\LinkParser;
+use App\Business\LinkParserInterface;
+use App\Business\Seo;
+use App\Business\SeoInterface;
+use App\Business\Tag;
+use App\Business\TagInterface;
 use App\Repositories\LinkRepository;
 use App\Repositories\LinkRepositoryInterface;
 use App\Repositories\TagRepository;
@@ -29,12 +31,16 @@ class AppServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
-            TagHelperInterface::class,
-            TagHelperHelper::class
+            TagInterface::class,
+            Tag::class
         );
         $this->app->bind(
-            LinkParserHelperInterface::class,
-            LinkParserHelper::class
+            LinkParserInterface::class,
+            LinkParser::class
+        );
+        $this->app->bind(
+            SeoInterface::class,
+            Seo::class
         );
     }
 

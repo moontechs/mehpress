@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Helpers;
+namespace App\Business;
 
-interface TagHelperInterface
+interface TagInterface
 {
     public function parseFromText(?string $text): array;
 

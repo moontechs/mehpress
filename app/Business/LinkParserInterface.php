@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Helpers;
+namespace App\Business;
 
 use App\Models\Post;
 use App\Models\Short;
 use Illuminate\Database\Eloquent\Model;
 
-interface LinkParserHelperInterface
+interface LinkParserInterface
 {
     public function extractUrls(string $text): array;
 

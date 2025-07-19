@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Helpers;
+namespace App\Business;
 
 use App\Repositories\TagRepositoryInterface;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
-class TagHelperHelper implements TagHelperInterface
+class Tag implements TagInterface
 {
     public function __construct(protected readonly TagRepositoryInterface $repository) {}
 

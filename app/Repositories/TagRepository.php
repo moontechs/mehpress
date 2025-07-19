@@ -19,9 +19,6 @@ class TagRepository implements TagRepositoryInterface
             FROM (
                 SELECT json_each.value
                 FROM posts, json_each(posts.tags)
-                UNION
-                SELECT json_each.value
-                FROM shorts, json_each(shorts.tags)
             ) AS all_tags
         ');
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\Unit\Helpers;
+namespace Tests\Unit\Business;
 
-use App\Helpers\SlugHelper;
+use App\Business\SlugHelper;
 use Tests\TestCase;
 
 class SlugHelperTest extends TestCase

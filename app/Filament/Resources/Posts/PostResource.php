@@ -2,11 +2,13 @@
 
 namespace App\Filament\Resources\Posts;
 
+use App\Constants;
 use App\Filament\Resources\Posts\Pages\CreatePost;
 use App\Filament\Resources\Posts\Pages\EditPost;
 use App\Filament\Resources\Posts\Pages\ListPosts;
 use App\Filament\Resources\Posts\RelationManagers\LinksRelationManager;
 use App\Filament\Resources\Posts\Schemas\PostForm;
+use App\Filament\Resources\Posts\Schemas\ShortPostForm;
 use App\Filament\Resources\Posts\Tables\PostsTable;
 use App\Models\Post;
 use BackedEnum;
@@ -23,7 +25,9 @@ class PostResource extends Resource
 
     public static function form(Schema $schema): Schema
     {
-        return PostForm::configure($schema);
+        $form = request()->query('type') === Constants::SHORT_POST_TYPE ? ShortPostForm::configure($schema) : PostForm::configure($schema);
+
+        return $form;
     }
 
     public static function table(Table $table): Table

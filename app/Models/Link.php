@@ -19,9 +19,4 @@ class Link extends Model
     {
         return $this->belongsToMany(Post::class);
     }
-
-    public function shorts(): BelongsToMany
-    {
-        return $this->belongsToMany(Short::class);
-    }
 }

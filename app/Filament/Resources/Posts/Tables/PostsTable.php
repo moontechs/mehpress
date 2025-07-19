@@ -16,9 +16,10 @@ class PostsTable
         return $table
             ->columns([
                 TextColumn::make('title')
-                    ->searchable(),
-                TextColumn::make('description')
                     ->limit(100)
+                    ->searchable(),
+                TextColumn::make('type')
+                    ->badge()
                     ->searchable(),
                 TextColumn::make('tags')
                     ->badge()
