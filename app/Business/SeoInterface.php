@@ -8,5 +8,5 @@ interface SeoInterface
 {
     public function getDefaultStructure(): array;
 
-    public function generateForPost(Post $post): void;
+    public function generateForPost(Post $post, bool $useAI = false): void;
 }
