@@ -13,24 +13,29 @@
 
 namespace App\Models{
 /**
- * 
- *
  * @property int $id
  * @property string $name
  * @property string|null $description
  * @property string $host
+ * @property string|null $logo_svg
+ * @property array<array-key, mixed> $navigation
+ * @property string $footer
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Post> $posts
  * @property-read int|null $posts_count
+ * @method static \Database\Factories\BlogFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Blog newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Blog newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Blog query()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Blog whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Blog whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Blog whereFooter($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Blog whereHost($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Blog whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Blog whereLogoSvg($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Blog whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Blog whereNavigation($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Blog whereUpdatedAt($value)
  * @mixin \Eloquent
  */
@@ -40,8 +45,6 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * 
- *
  * @property int $id
  * @property string $url
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -64,8 +67,6 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * 
- *
  * @property int $id
  * @property string $title
  * @property string|null $description
@@ -105,24 +106,6 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * 
- *
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Link> $links
- * @property-read int|null $links_count
- * @method static \Database\Factories\ShortFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Short newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Short newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Short query()
- * @mixin \Eloquent
- */
-	#[\AllowDynamicProperties]
-	class IdeHelperShort {}
-}
-
-namespace App\Models{
-/**
- * 
- *
  * @property int $id
  * @property string $name
  * @property string $email

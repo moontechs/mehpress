@@ -17,6 +17,12 @@ class Blog extends Model
         'name',
         'description',
         'host',
+        'logo_svg',
+        'navigation',
+    ];
+
+    protected $casts = [
+        'navigation' => 'array',
     ];
 
     public function posts(): HasMany

@@ -16,6 +16,9 @@ return new class extends Migration
             $table->string('name')->unique();
             $table->text('description')->nullable();
             $table->string('host')->unique();
+            $table->text('logo_svg')->nullable();
+            $table->jsonb('navigation')->default('[]');
+            $table->jsonb('footer')->default('[]');
             $table->timestamps();
         });
     }

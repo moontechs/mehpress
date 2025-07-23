@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Constants;
 use App\Observers\PostObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -41,11 +42,21 @@ class Post extends Model
 
     public function getUrl(): string
     {
-        return $this->blog->host.'/posts/'.$this->slug;
+        return $this->blog->host.'/post/'.$this->slug;
     }
 
     public function blog(): BelongsTo
     {
         return $this->belongsTo(Blog::class);
+    }
+
+    public function isPostType(): bool
+    {
+        return $this->type === Constants::POST_TYPE;
+    }
+
+    public function isShortType(): bool
+    {
+        return $this->type === Constants::SHORT_POST_TYPE;
     }
 }

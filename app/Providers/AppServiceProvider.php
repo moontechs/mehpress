@@ -2,8 +2,12 @@
 
 namespace App\Providers;
 
+use App\Business\BlogService;
+use App\Business\BlogServiceInterface;
 use App\Business\LinkParser;
 use App\Business\LinkParserInterface;
+use App\Business\Navigation;
+use App\Business\NavigationInterface;
 use App\Business\Seo;
 use App\Business\SeoInterface;
 use App\Business\Tag;
@@ -41,6 +45,14 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             SeoInterface::class,
             Seo::class
+        );
+        $this->app->bind(
+            BlogServiceInterface::class,
+            BlogService::class
+        );
+        $this->app->bind(
+            NavigationInterface::class,
+            Navigation::class
         );
     }
 

@@ -10,7 +10,8 @@
         "filament/filament": "^4.0",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",
-        "moe-mizrak/laravel-openrouter": "^2.2"
+        "moe-mizrak/laravel-openrouter": "^2.2",
+        "spatie/laravel-markdown": "^2.7"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.5",
