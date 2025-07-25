@@ -9,12 +9,16 @@ use Illuminate\Support\Collection;
 
 class BlogService implements BlogServiceInterface
 {
-    public function getLatestPostsPeriod(Blog $blog, ?string $type = null): ?string
+    public function getLatestPostsPeriod(Blog $blog, ?string $type = null, ?string $tag = null): ?string
     {
         $latestPost = $blog->posts()
             ->when($type, function (Builder $builder) use ($type) {
                 return $builder->where('type', $type);
-            })->latest()->first();
+            })
+            ->when($tag, function (Builder $builder) use ($tag) {
+                return $builder->whereJsonContains('tags', $tag);
+            })
+            ->latest()->first();
 
         if (! $latestPost) {
             return null;
@@ -26,12 +30,15 @@ class BlogService implements BlogServiceInterface
         return "{$month}-{$year}";
     }
 
-    public function getPostsGroupedByMonthForPeriod(Blog $blog, string $month, string $year, ?string $type = null): Collection
+    public function getPostsGroupedByMonthForPeriod(Blog $blog, string $month, string $year, ?string $type = null, ?string $tag = null): Collection
     {
         return $blog->posts()
             ->where('published', true)
             ->when($type, function (Builder $query) use ($type) {
                 $query->where('type', '=', $type);
+            })
+            ->when($tag, function (Builder $query) use ($tag) {
+                $query->whereJsonContains('tags', $tag);
             })
             ->whereMonth('created_at', '=', $month)
             ->whereYear('created_at', '=', $year)
@@ -39,7 +46,7 @@ class BlogService implements BlogServiceInterface
             ->get();
     }
 
-    public function getPostFromPreviousPeriod(Post $post, bool $sameType = false): ?Post
+    public function getPostFromPreviousPeriod(Post $post, bool $sameType = false, ?string $tag = null): ?Post
     {
         $currentMonth = $post->created_at->month;
         $currentYear = $post->created_at->year;
@@ -54,11 +61,14 @@ class BlogService implements BlogServiceInterface
             ->when($sameType, function (Builder $query) use ($post) {
                 $query->where('type', $post->type);
             })
+            ->when($tag, function (Builder $query) use ($tag) {
+                $query->whereJsonContains('tags', $tag);
+            })
             ->orderBy('created_at', 'desc')
             ->first();
     }
 
-    public function getPostFromNextPeriod(Post $post, bool $sameType = false): ?Post
+    public function getPostFromNextPeriod(Post $post, bool $sameType = false, ?string $tag = null): ?Post
     {
         $currentMonth = $post->created_at->month;
         $currentYear = $post->created_at->year;
@@ -72,6 +82,9 @@ class BlogService implements BlogServiceInterface
             })
             ->when($sameType, function (Builder $query) use ($post) {
                 $query->where('type', $post->type);
+            })
+            ->when($tag, function (Builder $query) use ($tag) {
+                $query->whereJsonContains('tags', $tag);
             })
             ->orderBy('created_at')
             ->first();

@@ -29,6 +29,8 @@ class PostSeeder extends Seeder
                                 fake()->word(),
                                 fake()->word(),
                                 fake()->word(),
+                                'same',
+                                'post',
                             ] : null,
                             'created_at' => fake()->dateTimeBetween(
                                 startDate: now()->month($month)->startOfMonth(),
@@ -39,7 +41,7 @@ class PostSeeder extends Seeder
                     );
                     Post::create(
                         [
-                            'text' => fake()->paragraph(3),
+                            'text' => fake()->sentence(20).' #short #same #'.fake()->word(),
                             'type' => 'short',
                             'blog_id' => $blog->id,
                             'published' => true,

@@ -14,7 +14,7 @@ return new class extends Migration
             $table->string('description', 500)->nullable();
             $table->text('text');
             $table->text('slug')->unique();
-            $table->text('tags')->nullable();
+            $table->text('tags')->nullable()->default('[]');
             $table->jsonb('seo_tags')->default('{}');
             $table->boolean('published')->default(false);
             $table->string('type')->default('post');

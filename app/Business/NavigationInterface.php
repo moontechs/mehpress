@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 interface NavigationInterface
 {
-    public function getPreviousFeedUrl(Model $model, ?string $type): ?string;
+    public function getPreviousFeedUrl(Model $model, ?string $type, array $queryParams = []): ?string;
 
-    public function getNextFeedUrl(Model $model, ?string $type): ?string;
+    public function getNextFeedUrl(Model $model, ?string $type, array $queryParams = []): ?string;
 }

@@ -15,6 +15,10 @@ class PostController extends Controller
 
         $post = $blogService->getPostBySlug($blog, $slug);
 
+        if (! $post) {
+            abort(404);
+        }
+
         // $navigationPrevious = $navigation->getPreviousPeriodFeedUrl($posts->first(), Constants::FEED);
         // $navigationNext = $navigation->getNextPeriodFeedUrl($posts->first(), Constants::FEED);
 

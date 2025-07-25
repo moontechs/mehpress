@@ -10,34 +10,40 @@ class Navigation implements NavigationInterface
 {
     public function __construct(protected readonly BlogServiceInterface $blogService) {}
 
-    public function getPreviousFeedUrl(Model $model, ?string $type): ?string
+    public function getPreviousFeedUrl(Model $model, ?string $type, array $queryParams = []): ?string
     {
         if (! $model instanceof Post) {
             throw new \InvalidArgumentException('Model must be an instance of Post.');
         }
 
-        $previousPost = $this->blogService->getPostFromPreviousPeriod($model, $type !== Constants::FEED);
+        $tag = $queryParams['tag'] ?? null;
+        $previousPost = $this->blogService->getPostFromPreviousPeriod($model, $type !== Constants::FEED, $tag);
 
         if (! $previousPost) {
             return null;
         }
 
-        return route($this->getRouteName($type), ['period' => $previousPost->created_at->format('m-Y')]);
+        $params = array_merge(['period' => $previousPost->created_at->format('m-Y')], $queryParams);
+
+        return route($this->getRouteName($type), $params);
     }
 
-    public function getNextFeedUrl(Model $model, ?string $type): ?string
+    public function getNextFeedUrl(Model $model, ?string $type, array $queryParams = []): ?string
     {
         if (! $model instanceof Post) {
             throw new \InvalidArgumentException('Model must be an instance of Post.');
         }
 
-        $nextPost = $this->blogService->getPostFromNextPeriod($model, $type !== Constants::FEED);
+        $tag = $queryParams['tag'] ?? null;
+        $nextPost = $this->blogService->getPostFromNextPeriod($model, $type !== Constants::FEED, $tag);
 
         if (! $nextPost) {
             return null;
         }
 
-        return route($this->getRouteName($type), ['period' => $nextPost->created_at->format('m-Y')]);
+        $params = array_merge(['period' => $nextPost->created_at->format('m-Y')], $queryParams);
+
+        return route($this->getRouteName($type), $params);
     }
 
     private function getRouteName(?string $feedType): string

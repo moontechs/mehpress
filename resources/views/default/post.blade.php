@@ -29,7 +29,7 @@
         @if($post->tags && count($post->tags) > 0)
             <div class="flex items-center gap-x-4 text-xs mt-6">
                 @foreach($post->tags as $tag)
-                    <a href="#" class="relative inline-block font-medium md:text-lg text-black before:absolute before:bottom-0.5 before:end-0 before:-z-1 before:w-full before:h-1 before:bg-yellow-400 hover:before:bg-black focus:outline-hidden focus:before:bg-black dark:text-white dark:hover:before:bg-white dark:focus:before:bg-white">
+                    <a href="/?tag={{ $tag }}" class="relative inline-block font-medium md:text-lg text-black before:absolute before:bottom-0.5 before:end-0 before:-z-1 before:w-full before:h-1 before:bg-yellow-400 hover:before:bg-black focus:outline-hidden focus:before:bg-black dark:text-white dark:hover:before:bg-white dark:focus:before:bg-white">
                         {{ $tag }}
                     </a>
                 @endforeach

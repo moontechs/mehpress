@@ -16,19 +16,26 @@ class FeedController extends Controller
         $blog = $request->session()->get('blog');
         $feedType = $request->route()->getName();
         $postType = $this->getPostTypeFromFeedType($feedType);
+        $tag = $request->input('tag');
 
-        $period = $request->input('period', $blogService->getLatestPostsPeriod($blog, $postType));
+        $period = $request->input('period', $blogService->getLatestPostsPeriod($blog, $postType, $tag));
 
         [$month, $year] = explode('-', $period);
-        $posts = $blogService->getPostsGroupedByMonthForPeriod($blog, $month, $year, $postType);
+        $posts = $blogService->getPostsGroupedByMonthForPeriod($blog, $month, $year, $postType, $tag);
+
+        if ($posts->isEmpty()) {
+            abort(404);
+        }
+
+        $queryParams = $tag ? ['tag' => $tag] : [];
 
         $navigationPreviousElement = new Element(
             'Past',
-            $navigation->getPreviousFeedUrl($posts->first(), $postType
+            $navigation->getPreviousFeedUrl($posts->first(), $postType, $queryParams
             ));
         $navigationNextElement = new Element(
             'Future',
-            $navigation->getNextFeedUrl($posts->first(), $postType
+            $navigation->getNextFeedUrl($posts->first(), $postType, $queryParams
             ));
 
         return view('default.feed', [
