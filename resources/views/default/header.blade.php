@@ -48,9 +48,9 @@ $currentSegment = request()->segment(1) ? '/' . request()->segment(1) : '/';
                         <div>
                             <a
                                 @if($currentSegment === $navigation['url'])
-                                    class="relative inline-block text-black focus:outline-hidden before:absolute before:bottom-0.5 before:start-0 before:-z-1 before:w-full before:h-1 before:bg-yellow-400 dark:text-white hover:before:bg-black dark:hover:before:bg-white"
+                                    class="relative inline-block font-medium md:text-lg text-black before:absolute before:bottom-0.5 before:end-0 before:-z-1 before:w-full before:h-1 before:bg-black hover:before:bg-black focus:outline-hidden focus:before:bg-black dark:text-white dark:hover:before:bg-white dark:focus:before:bg-white"
                                 @else
-                                    class="inline-block text-black hover:text-gray-600 focus:outline-hidden focus:text-gray-600 dark:text-white dark:hover:text-neutral-300 dark:focus:text-neutral-300"
+                                    class="relative inline-block font-medium md:text-lg text-black before:absolute before:bottom-0.5 before:end-0 before:-z-1 before:w-full before:h-1 before:bg-yellow-400 hover:before:bg-black focus:outline-hidden focus:before:bg-black dark:text-white dark:hover:before:bg-white dark:focus:before:bg-white"
                                 @endif
 
                                href="{{ $navigation['url'] }}"
