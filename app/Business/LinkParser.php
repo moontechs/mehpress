@@ -4,9 +4,7 @@ namespace App\Business;
 
 use App\Models\Blog;
 use App\Models\Post;
-use App\Models\Short;
 use App\Repositories\LinkRepositoryInterface;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
@@ -29,10 +27,7 @@ class LinkParser implements LinkParserInterface
         );
     }
 
-    /**
-     * @param  Model|Post|Short  $model
-     */
-    public function updateModelLinks(Model $model, string $content): void
+    public function updateModelLinks(Post $post, string $content): void
     {
         $urls = $this->extractUrls($content);
 
@@ -40,6 +35,6 @@ class LinkParser implements LinkParserInterface
             return;
         }
 
-        $this->linkRepository->updateLinksList($model, $urls);
+        $this->linkRepository->updateLinksList($post, $urls);
     }
 }

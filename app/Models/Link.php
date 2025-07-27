@@ -13,7 +13,14 @@ class Link extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['url'];
+    protected $fillable = [
+        'url',
+        'metadata',
+    ];
+
+    protected $casts = [
+        'metadata' => 'array',
+    ];
 
     public function posts(): BelongsToMany
     {

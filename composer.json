@@ -7,7 +7,10 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "ext-dom": "*",
+        "ext-libxml": "*",
         "filament/filament": "^4.0",
+        "kovah/laravel-html-meta": "^4.2",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",
         "moe-mizrak/laravel-openrouter": "^2.2",
