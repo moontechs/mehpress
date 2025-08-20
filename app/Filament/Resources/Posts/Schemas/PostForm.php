@@ -62,8 +62,6 @@ class PostForm
                 TextInput::make('description')
                     ->columnSpanFull(),
                 MarkdownEditor::make('text')
-                    ->fileAttachmentsDisk('local')
-                    ->fileAttachmentsDirectory('images')
                     ->required()
                     ->columnSpanFull(),
                 TagsInput::make('tags')

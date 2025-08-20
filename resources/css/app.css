@@ -15,9 +15,6 @@
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
 
-/* Preline UI */
-/*@source "../../node_modules/preline/dist!*.js";*/
-
 @font-face {
     font-family: 'Victor Mono', monospace;
 }
