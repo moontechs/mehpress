@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import url('https://fonts.googleapis.com/css2?family=Victor+Mono:ital,wght@0,100..700;1,100..700&display=swap');
 
 /* Preline UI */
 @import "../../node_modules/preline/variants.css";
@@ -11,11 +12,15 @@
 @theme {
     --font-family: 'Victor Mono', monospace;
     --font-mono: 'Victor Mono', monospace;
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans: 'Victor Mono', monospace;
 }
 
-@font-face {
+/* Apply Victor Mono globally as default font */
+* {
+    font-family: 'Victor Mono', monospace !important;
+}
+
+body {
     font-family: 'Victor Mono', monospace;
 }
 
