@@ -27,8 +27,12 @@
                 <div class="relative group-last:after:hidden after:absolute after:top-8 after:bottom-2 after:start-3 after:w-px after:-translate-x-[0.5px] after:bg-gray-200 dark:after:bg-neutral-700">
                     <div class="relative z-10 size-6 flex justify-center items-center">
                         @if ($post->isPostType())
-                            <img src="/icons/tabler/outline/article.svg" alt="{{ $post->description }}" />
+                            <img src="/icons/tabler/outline/article.svg" alt="Post icon" />
                         @endif
+
+                            @if ($post->isShortType())
+                                <img src="/icons/tabler/outline/square-letter-{{ $post->description[0] }}.svg" alt="Short icon" />
+                            @endif
                     </div>
                 </div>
                 <!-- End Icon -->
