@@ -29,10 +29,6 @@
                         @if ($post->isPostType())
                             <img src="/icons/tabler/outline/article.svg" alt="{{ $post->description }}" />
                         @endif
-
-                        @if ($post->isShortType())
-                            <img src="/icons/tabler/outline/square-letter-{{ $post->description[0] }}.svg" alt="{{ $post->description }}" />
-                        @endif
                     </div>
                 </div>
                 <!-- End Icon -->
@@ -52,15 +48,19 @@
                     </a>
 
                     <a href="{{ $post->getUrl() }}">
-                        <p class="mt-1 text-lg text-gray-600 dark:text-neutral-400">
+                        <div class="mt-1 text-lg text-gray-600 dark:text-neutral-400">
                             @if ($post->isPostType())
-                                {{ $post->description }}
+                                <p>{{ $post->description }}</p>
                             @endif
 
                             @if ($post->isShortType())
-                                {{ $post->text }}
+                                <div class="prose prose-sm dark:prose-invert max-w-none">
+                                    <x-markdown>
+                                        {!! $post->text !!}
+                                    </x-markdown>
+                                </div>
                             @endif
-                        </p>
+                        </div>
                     </a>
                 </div>
                 <!-- End Right Content -->
