@@ -5,20 +5,16 @@ namespace App\Filament\Resources\Posts\Schemas;
 use App\Business\SeoInterface;
 use App\Constants;
 use App\Jobs\GenerateSeoTagsUsingAiJob;
-use App\Models\Blog;
 use Filament\Actions\Action;
 use Filament\Forms\Components\KeyValue;
 use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Actions;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
-use Illuminate\Support\Str;
-use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class ShortPostForm
 {
@@ -28,24 +24,21 @@ class ShortPostForm
 
         return $schema
             ->components([
-                TextInput::make('title')
-                    ->default(fn (Get $get) => Str::random(20))
-                    ->hidden(),
-                TextInput::make('slug')
-                    ->default(fn (Get $get) => Str::random(20))
-                    ->hidden(),
                 Select::make('blog_id')
                     ->relationship('blog', 'name')
                     ->selectablePlaceholder(false)
-                    ->afterStateHydrated(function (Set $set, ?string $state) {
-                        $blogId = request()->query('blog_id');
-                        if ($blogId && ! $state) {
-                            $set('blog_id', $blogId);
-                        }
-                    })->hidden(),
+                    ->default(fn () => request()->query('blog_id'))
+                    ->required()
+                    ->hidden(),
                 Select::make('type')
                     ->options(array_combine(Constants::POST_TYPES, Constants::POST_TYPES))
                     ->default(Constants::SHORT_POST_TYPE)
+                    ->afterStateHydrated(function (Set $set, ?string $state) {
+                        $type = request()->query('type');
+                        if ($type && ! $state && $type === Constants::SHORT_POST_TYPE) {
+                            $set('type', Constants::SHORT_POST_TYPE);
+                        }
+                    })
                     ->hidden(),
                 Toggle::make('published')
                     ->default(true)

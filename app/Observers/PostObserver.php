@@ -84,5 +84,6 @@ class PostObserver
         $post->slug = SlugHelper::getForShort($firstSentence);
         $post->description = $firstSentence;
         $post->tags = Arr::flatten($this->tag->parseFromText($post->text));
+        $post->published = true;
     }
 }
