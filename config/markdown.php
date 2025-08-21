@@ -61,7 +61,7 @@ return [
      *
      * More info: https://spatie.be/docs/laravel-markdown/v1/advanced-usage/customizing-the-rendering-process
      */
-    'renderer_class' => Spatie\LaravelMarkdown\MarkdownRenderer::class,
+    'renderer_class' => App\Markdown\CustomMarkdownRenderer::class,
 
     /*
      * These extensions should be added to the markdown environment. A valid
@@ -90,7 +90,7 @@ return [
      * More info: https://commonmark.thephpleague.com/2.4/customization/rendering/
      */
     'inline_renderers' => [
-        // ['class' => FencedCode::class, 'renderer' => MyCustomCodeRenderer::class, 'priority' => 0]
+        // Custom link renderer is now handled in CustomMarkdownRenderer class
     ],
 
     /*

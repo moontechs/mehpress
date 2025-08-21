@@ -8,10 +8,6 @@
 
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=victor-mono:400,500,600" rel="stylesheet" />
-
         <!-- Styles / Scripts -->
         @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
             @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -22,9 +18,11 @@
     @include('default.header')
 
     <main id="content">
-        <div class="w-full max-w-4xl mx-auto pt-10 px-4 sm:px-6 lg:px-8">
-            <div class="mt-10 sm:mt-14">
-                @yield('content')
+        <div class="flex min-h-screen items-center justify-center w-full">
+            <div class="w-full max-w-4xl pt-10 px-4 sm:px-6 lg:px-8">
+                <div class="mt-10 sm:mt-14">
+                    @yield('content')
+                </div>
             </div>
         </div>
     </main>
