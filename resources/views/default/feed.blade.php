@@ -30,9 +30,26 @@
                             <img src="/icons/tabler/outline/article.svg" alt="Post icon" />
                         @endif
 
-                            @if ($post->isShortType())
-                                <img src="/icons/tabler/outline/square-letter-{{ $post->description[0] }}.svg" alt="Short icon" />
-                            @endif
+                        @if ($post->isShortType())
+                            @php
+                                $iconLetter = null;
+                                $tries = 0;
+                                foreach (str_split($post->description) as $char) {
+                                    if (preg_match('/[a-zA-Z]/', $char)) {
+                                        $iconLetter = strtolower($char);
+                                        break;
+                                    }
+                                    $tries++;
+                                    if ($tries >= 5) {
+                                        break;
+                                    }
+                                }
+                                if (!$iconLetter) {
+                                    $iconLetter = chr(rand(97, 122));
+                                }
+                            @endphp
+                            <img src="/icons/tabler/outline/square-letter-{{ $iconLetter }}.svg" alt="Short icon" />
+                        @endif
                     </div>
                 </div>
                 <!-- End Icon -->

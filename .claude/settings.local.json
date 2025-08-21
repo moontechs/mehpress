@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__laravel-boost__*"
+    ]
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "laravel-boost"
+  ]
+}
