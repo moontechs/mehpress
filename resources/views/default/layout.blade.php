@@ -22,6 +22,8 @@
             <div class="w-full max-w-4xl pt-10 px-4 sm:px-6 lg:px-8">
                 <div class="mt-10 sm:mt-14">
                     @yield('content')
+
+                    @include('default.footer')
                 </div>
             </div>
         </div>
