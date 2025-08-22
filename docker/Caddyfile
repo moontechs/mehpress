@@ -1,0 +1,107 @@
+{
+    # Global options
+    admin off
+    persist_config off
+    auto_https off
+}
+
+:80 {
+    # Laravel root directory
+    root * /app/public
+
+    # FrankenPHP handles PHP natively
+    php_server
+
+    # Security headers
+    header {
+        # Remove server info
+        -Server
+
+        # Security headers
+        X-Content-Type-Options nosniff
+        X-Frame-Options DENY
+        X-XSS-Protection "1; mode=block"
+        Referrer-Policy strict-origin-when-cross-origin
+    }
+
+    # Prevent caching of sensitive pages
+    @admin {
+        path /admin/*
+    }
+
+    handle @admin {
+        header Cache-Control "no-cache, no-store, must-revalidate"
+    }
+
+    # Static file handling with aggressive caching
+    @static {
+        file
+        path *.css *.js *.ico *.png *.jpg *.jpeg *.gif *.svg *.woff *.woff2 *.ttf *.eot *.webp *.avif
+    }
+
+    # Public storage files with aggressive caching
+    @publicStorage {
+        path_regexp ^/storage/.+\.(css|js|ico|png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot|webp|avif)$
+    }
+
+    handle @static {
+        header Cache-Control "public, max-age=31536000, immutable"
+        file_server
+    }
+
+    handle @publicStorage {
+        header Cache-Control "public, max-age=31536000, immutable"
+    }
+
+    # Handle Laravel routes
+    @notStatic {
+        not file
+        path_regexp ^(.*)$
+    }
+
+    handle @notStatic {
+        try_files {path} /index.php?{query}
+    }
+
+    # Security: Deny access to sensitive files
+    @sensitive {
+        path /.env* /composer.* /package.* /.git/* /bootstrap/cache/* /vendor/* /node_modules/* /tests/* /artisan
+    }
+
+    handle @sensitive {
+        respond 403
+    }
+
+    # Protect private storage directories
+    @privateStorage {
+        path /storage/framework/* /storage/logs/* /storage/app/private/*
+    }
+
+    handle @privateStorage {
+        respond 403
+    }
+
+    # Health check endpoint
+    handle /health {
+        respond "OK" 200
+    }
+
+    # Logging
+    log {
+        output stdout
+        format json
+    }
+
+    # Error handling
+    handle_errors {
+        @5xx expression {http.error.status_code} >= 500
+        handle @5xx {
+            respond "Internal Server Error" 500
+        }
+
+        @4xx expression {http.error.status_code} >= 400
+        handle @4xx {
+            respond "Not Found" 404
+        }
+    }
+}
