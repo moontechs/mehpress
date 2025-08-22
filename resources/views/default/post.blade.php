@@ -15,7 +15,7 @@
     @endif
     <!-- End Title -->
 
-    <div class="mt-16 space-y-5 prose dark:prose-invert">
+    <div class="mt-16 space-y-5 prose max-w-full dark:prose-invert">
         <x-markdown>
             {!! $post->text !!}
         </x-markdown>

@@ -1,7 +1,7 @@
 <div class="">
     <a href="{{ $url }}"
        target="_blank"
-       rel="noopener noreferrer"
+       rel="noopener noreferrer nofollow"
        class="block group border border-gray-200 rounded-lg p-4 hover:border-gray-300 hover:shadow-md transition-all duration-200 no-underline dark:border-gray-700 dark:hover:border-gray-600 my-4">
 
         <div class="flex gap-4">
