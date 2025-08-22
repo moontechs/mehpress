@@ -25,9 +25,7 @@ class PostResource extends Resource
 
     public static function form(Schema $schema): Schema
     {
-        $form = request()->query('type') === Constants::SHORT_POST_TYPE ? ShortPostForm::configure($schema) : PostForm::configure($schema);
-
-        return $form;
+        return request()->query('type') === Constants::SHORT_POST_TYPE ? ShortPostForm::configure($schema) : PostForm::configure($schema);
     }
 
     public static function table(Table $table): Table

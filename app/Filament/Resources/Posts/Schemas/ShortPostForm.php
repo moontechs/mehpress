@@ -2,11 +2,12 @@
 
 namespace App\Filament\Resources\Posts\Schemas;
 
-use App\Business\SeoInterface;
+use App\Business\BlogService;
 use App\Constants;
 use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Toggle;
+use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 
@@ -14,8 +15,6 @@ class ShortPostForm
 {
     public static function configure(Schema $schema): Schema
     {
-        $seo = app()->make(SeoInterface::class);
-
         return $schema
             ->components([
                 Select::make('blog_id')
@@ -40,6 +39,10 @@ class ShortPostForm
 
                 MarkdownEditor::make('text')
                     ->fileAttachmentsDisk('public')
+                    ->getFileAttachmentUrlUsing(function (string $file, Get $get, BlogService $blogService) {
+                        return $blogService->getFileUrlForBlog($get('blog_id'), $file);
+                    })
+                    ->autofocus()
                     ->columnSpanFull()
                     ->required(),
             ]);

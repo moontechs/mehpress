@@ -17,4 +17,6 @@ interface BlogServiceInterface
     public function getPostFromNextPeriod(Post $post, bool $sameType = false, ?string $tag = null): ?Post;
 
     public function getPostBySlug(Blog $blog, string $slug);
+
+    public function getFileUrlForBlog(int $blogId, string $filePath): ?string;
 }

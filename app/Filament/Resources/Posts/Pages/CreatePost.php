@@ -27,6 +27,7 @@ class CreatePost extends CreateRecord
 
         if ($this->postType === Constants::SHORT_POST_TYPE) {
             $this->form->fill(['type' => Constants::SHORT_POST_TYPE]);
+            $this->form->fill(['blog_id' => $this->blogId]);
         }
     }
 
