@@ -18,7 +18,7 @@
     @include('default.header')
 
     <main id="content">
-        <div class="flex min-h-screen items-center justify-center w-full">
+        <div class="flex min-h-screen justify-center w-full">
             <div class="w-full max-w-4xl pt-10 px-4 sm:px-6 lg:px-8">
                 <div class="mt-10 sm:mt-14">
                     @yield('content')
