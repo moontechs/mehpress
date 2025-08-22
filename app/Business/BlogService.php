@@ -96,4 +96,14 @@ class BlogService implements BlogServiceInterface
             ->where('slug', $slug)
             ->first();
     }
+
+    public function getFileUrlForBlog(int $blogId, string $filePath): ?string
+    {
+        $blog = Blog::find($blogId);
+        if (! $blog) {
+            return null;
+        }
+
+        return sprintf('%s/storage/%s', $blog->host, $filePath);
+    }
 }

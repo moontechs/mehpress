@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Posts\Schemas;
 
+use App\Business\BlogService;
 use App\Business\SeoInterface;
 use App\Business\SlugHelper;
 use App\Business\TagInterface;
@@ -62,7 +63,17 @@ class PostForm
                 TextInput::make('description')
                     ->columnSpanFull(),
                 MarkdownEditor::make('text')
+                    ->toolbarButtons([
+                        ['bold', 'italic', 'strike', 'link'],
+                        ['heading'],
+                        ['blockquote', 'codeBlock', 'bulletList', 'orderedList'],
+                        ['table', 'attachFiles'],
+                        ['undo', 'redo'],
+                    ])
                     ->fileAttachmentsDisk('public')
+                    ->getFileAttachmentUrlUsing(function (string $file, Get $get, BlogService $blogService) {
+                        return $blogService->getFileUrlForBlog($get('blog_id'), $file);
+                    })
                     ->required()
                     ->columnSpanFull(),
                 TagsInput::make('tags')

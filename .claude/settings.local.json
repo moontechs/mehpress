@@ -1,7 +1,7 @@
 {
   "permissions": {
     "allow": [
-      "mcp__laravel-boost__*"
+      "mcp__laravel-boost__search-docs"
     ]
   },
   "enableAllProjectMcpServers": true,
