@@ -24,6 +24,10 @@ class DetectBlogByHostMiddleware
 
         $request->session()->put('blog', $blog);
 
+        if (! $request->session()->has('language')) {
+            $request->session()->put('language', $blog->default_language);
+        }
+
         return $next($request);
     }
 }

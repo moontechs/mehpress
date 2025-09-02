@@ -50,6 +50,7 @@ class PostForm
                         ->relationship('blog', 'name')
                         ->selectablePlaceholder(false)
                         ->default(fn (Get $get) => Blog::first()?->id ?? 1)
+                        ->live()
                         ->afterStateHydrated(function (Set $set, ?string $state) {
                             $blogId = request()->query('blog_id');
                             if ($blogId && ! $state) {
@@ -59,7 +60,33 @@ class PostForm
                     Select::make('type')
                         ->options(array_combine(Constants::POST_TYPES, Constants::POST_TYPES))
                         ->default(Constants::POST_TYPE),
-                ]),
+                    Select::make('language')
+                        ->label('Language')
+                        ->options(function (Get $get) {
+                            $blogId = $get('blog_id');
+                            if (! $blogId) {
+                                return [];
+                            }
+                            $blog = Blog::find($blogId);
+                            if (! $blog || ! $blog->languages) {
+                                return [];
+                            }
+
+                            return array_combine($blog->languages, $blog->languages);
+                        })
+                        ->default(function (Get $get) {
+                            $blogId = $get('blog_id');
+                            if (! $blogId) {
+                                return null;
+                            }
+                            $blog = Blog::find($blogId);
+
+                            return $blog?->default_language;
+                        })
+                        ->live()
+                        ->rules(['required', 'regex:/^[a-z]{2}_[A-Z]{2}$/'])
+                        ->required(),
+                ])->columns(3),
                 TextInput::make('description')
                     ->columnSpanFull(),
                 MarkdownEditor::make('text')

@@ -19,6 +19,8 @@ return new class extends Migration
             $table->text('logo_svg')->nullable();
             $table->jsonb('navigation')->default('[]');
             $table->jsonb('footer')->default('[]');
+            $table->jsonb('languages')->default('["en_US"]');
+            $table->string('default_language')->default('en_US');
             $table->timestamps();
         });
     }

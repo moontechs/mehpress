@@ -20,6 +20,8 @@ namespace App\Models{
  * @property string|null $logo_svg
  * @property array<array-key, mixed> $navigation
  * @property string $footer
+ * @property array<array-key, mixed> $languages
+ * @property string $default_language
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Post> $posts
@@ -29,10 +31,12 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Blog newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Blog query()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Blog whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Blog whereDefaultLanguage($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Blog whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Blog whereFooter($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Blog whereHost($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Blog whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Blog whereLanguages($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Blog whereLogoSvg($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Blog whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Blog whereNavigation($value)
@@ -47,6 +51,7 @@ namespace App\Models{
 /**
  * @property int $id
  * @property string $url
+ * @property array<array-key, mixed>|null $metadata
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Post> $posts
@@ -57,6 +62,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Link query()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Link whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Link whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Link whereMetadata($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Link whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Link whereUrl($value)
  * @mixin \Eloquent
@@ -77,6 +83,7 @@ namespace App\Models{
  * @property int $published
  * @property string $type
  * @property int $blog_id
+ * @property string|null $language
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Blog $blog
@@ -90,6 +97,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Post whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Post whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Post whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Post whereLanguage($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Post wherePublished($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Post whereSeoTags($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Post whereSlug($value)

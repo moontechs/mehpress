@@ -13,6 +13,10 @@ class PostSeeder extends Seeder
      */
     public function run(): void
     {
+        if (config('app.env') === 'production') {
+            return;
+        }
+
         foreach (Blog::all() as $blog) {
             for ($month = 1; $month <= 5; $month++) {
                 for ($i = 1; $i <= 5; $i++) {
@@ -32,6 +36,7 @@ class PostSeeder extends Seeder
                                 'same',
                                 'post',
                             ] : null,
+                            'language' => 'en_US',
                             'created_at' => fake()->dateTimeBetween(
                                 startDate: now()->month($month)->startOfMonth(),
                                 endDate: now()->month($month)->endOfMonth(),
@@ -45,6 +50,7 @@ class PostSeeder extends Seeder
                             'type' => 'short',
                             'blog_id' => $blog->id,
                             'published' => true,
+                            'language' => 'en_US',
                             'created_at' => fake()->dateTimeBetween(
                                 startDate: now()->month($month)->startOfMonth(),
                                 endDate: now()->month($month)->endOfMonth(),

@@ -3,6 +3,7 @@
 namespace App\Business;
 
 use App\Constants;
+use App\DTO\PostsFilter;
 use App\Models\Post;
 use Illuminate\Database\Eloquent\Model;
 
@@ -10,40 +11,40 @@ class Navigation implements NavigationInterface
 {
     public function __construct(protected readonly BlogServiceInterface $blogService) {}
 
-    public function getPreviousFeedUrl(Model $model, ?string $type, array $queryParams = []): ?string
+    public function getPreviousFeedUrl(Model $model, PostsFilter $filter): ?string
     {
         if (! $model instanceof Post) {
             throw new \InvalidArgumentException('Model must be an instance of Post.');
         }
 
         $tag = $queryParams['tag'] ?? null;
-        $previousPost = $this->blogService->getPostFromPreviousPeriod($model, $type !== Constants::FEED, $tag);
+        $previousPost = $this->blogService->getPostFromPreviousPeriod($model, $filter->type !== Constants::FEED, $filter);
 
         if (! $previousPost) {
             return null;
         }
 
-        $params = array_merge(['period' => $previousPost->created_at->format('m-Y')], $queryParams);
+        $params = array_merge(['period' => $previousPost->created_at->format('m-Y')], $this->filterToQueryParams($filter));
 
-        return route($this->getRouteName($type), $params);
+        return route($this->getRouteName($filter->type), $params);
     }
 
-    public function getNextFeedUrl(Model $model, ?string $type, array $queryParams = []): ?string
+    public function getNextFeedUrl(Model $model, PostsFilter $filter): ?string
     {
         if (! $model instanceof Post) {
             throw new \InvalidArgumentException('Model must be an instance of Post.');
         }
 
         $tag = $queryParams['tag'] ?? null;
-        $nextPost = $this->blogService->getPostFromNextPeriod($model, $type !== Constants::FEED, $tag);
+        $nextPost = $this->blogService->getPostFromNextPeriod($model, $filter->type !== Constants::FEED, $filter);
 
         if (! $nextPost) {
             return null;
         }
 
-        $params = array_merge(['period' => $nextPost->created_at->format('m-Y')], $queryParams);
+        $params = array_merge(['period' => $nextPost->created_at->format('m-Y')], $this->filterToQueryParams($filter));
 
-        return route($this->getRouteName($type), $params);
+        return route($this->getRouteName($filter->type), $params);
     }
 
     private function getRouteName(?string $feedType): string
@@ -55,5 +56,15 @@ class Navigation implements NavigationInterface
             Constants::QUOTE => 'quotes',
             default => 'feed',
         };
+    }
+
+    private function filterToQueryParams(PostsFilter $filter): array
+    {
+        $queryParams = [];
+        if ($filter->tag) {
+            $queryParams['tag'] = $filter->tag;
+        }
+
+        return $queryParams;
     }
 }

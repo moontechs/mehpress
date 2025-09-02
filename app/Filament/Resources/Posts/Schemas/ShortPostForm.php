@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Posts\Schemas;
 
 use App\Business\BlogService;
 use App\Constants;
+use App\Models\Blog;
 use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Toggle;
@@ -33,6 +34,31 @@ class ShortPostForm
                         }
                     })
                     ->hidden(),
+                Select::make('language')
+                    ->label('Language')
+                    ->options(function (Get $get) {
+                        $blogId = $get('blog_id') ?? request()->query('blog_id');
+                        if (! $blogId) {
+                            return [];
+                        }
+                        $blog = Blog::find($blogId);
+                        if (! $blog || ! $blog->languages) {
+                            return [];
+                        }
+
+                        return array_combine($blog->languages, $blog->languages);
+                    })
+                    ->default(function (Get $get) {
+                        $blogId = $get('blog_id') ?? request()->query('blog_id');
+                        if (! $blogId) {
+                            return null;
+                        }
+                        $blog = Blog::find($blogId);
+
+                        return $blog?->default_language;
+                    })
+                    ->rules(['required', 'regex:/^[a-z]{2}_[A-Z]{2}$/'])
+                    ->required(),
                 Toggle::make('published')
                     ->default(true)
                     ->hidden(),

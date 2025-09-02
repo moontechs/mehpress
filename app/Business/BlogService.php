@@ -2,6 +2,7 @@
 
 namespace App\Business;
 
+use App\DTO\PostsFilter;
 use App\Models\Blog;
 use App\Models\Post;
 use Illuminate\Database\Eloquent\Builder;
@@ -9,14 +10,17 @@ use Illuminate\Support\Collection;
 
 class BlogService implements BlogServiceInterface
 {
-    public function getLatestPostsPeriod(Blog $blog, ?string $type = null, ?string $tag = null): ?string
+    public function getLatestPostsPeriod(Blog $blog, ?PostsFilter $filter = null): ?string
     {
         $latestPost = $blog->posts()
-            ->when($type, function (Builder $builder) use ($type) {
-                return $builder->where('type', $type);
+            ->when($filter->type, function (Builder $builder) use ($filter) {
+                return $builder->where('type', $filter->type);
             })
-            ->when($tag, function (Builder $builder) use ($tag) {
-                return $builder->whereJsonContains('tags', $tag);
+            ->when($filter->tag, function (Builder $builder) use ($filter) {
+                return $builder->whereJsonContains('tags', $filter->tag);
+            })
+            ->when($filter->language, function (Builder $builder) use ($filter) {
+                return $builder->where('language', $filter->language);
             })
             ->latest()->first();
 
@@ -30,15 +34,18 @@ class BlogService implements BlogServiceInterface
         return "{$month}-{$year}";
     }
 
-    public function getPostsGroupedByMonthForPeriod(Blog $blog, string $month, string $year, ?string $type = null, ?string $tag = null): Collection
+    public function getPostsGroupedByMonthForPeriod(Blog $blog, string $month, string $year, ?PostsFilter $filter = null): Collection
     {
         return $blog->posts()
             ->where('published', true)
-            ->when($type, function (Builder $query) use ($type) {
-                $query->where('type', '=', $type);
+            ->when($filter->type, function (Builder $query) use ($filter) {
+                $query->where('type', '=', $filter->type);
             })
-            ->when($tag, function (Builder $query) use ($tag) {
-                $query->whereJsonContains('tags', $tag);
+            ->when($filter->tag, function (Builder $query) use ($filter) {
+                $query->whereJsonContains('tags', $filter->tag);
+            })
+            ->when($filter->language, function (Builder $query) use ($filter) {
+                $query->where('language', $filter->language);
             })
             ->whereMonth('created_at', '=', $month)
             ->whereYear('created_at', '=', $year)
@@ -46,7 +53,7 @@ class BlogService implements BlogServiceInterface
             ->get();
     }
 
-    public function getPostFromPreviousPeriod(Post $post, bool $sameType = false, ?string $tag = null): ?Post
+    public function getPostFromPreviousPeriod(Post $post, bool $sameType = false, ?PostsFilter $filter = null): ?Post
     {
         $currentMonth = $post->created_at->month;
         $currentYear = $post->created_at->year;
@@ -61,14 +68,17 @@ class BlogService implements BlogServiceInterface
             ->when($sameType, function (Builder $query) use ($post) {
                 $query->where('type', $post->type);
             })
-            ->when($tag, function (Builder $query) use ($tag) {
-                $query->whereJsonContains('tags', $tag);
+            ->when($filter?->tag, function (Builder $query) use ($filter) {
+                $query->whereJsonContains('tags', $filter->tag);
+            })
+            ->when($filter?->language, function (Builder $query) use ($filter) {
+                $query->where('language', $filter->language);
             })
             ->orderBy('created_at', 'desc')
             ->first();
     }
 
-    public function getPostFromNextPeriod(Post $post, bool $sameType = false, ?string $tag = null): ?Post
+    public function getPostFromNextPeriod(Post $post, bool $sameType = false, ?PostsFilter $filter = null): ?Post
     {
         $currentMonth = $post->created_at->month;
         $currentYear = $post->created_at->year;
@@ -83,8 +93,11 @@ class BlogService implements BlogServiceInterface
             ->when($sameType, function (Builder $query) use ($post) {
                 $query->where('type', $post->type);
             })
-            ->when($tag, function (Builder $query) use ($tag) {
-                $query->whereJsonContains('tags', $tag);
+            ->when($filter?->tag, function (Builder $query) use ($filter) {
+                $query->whereJsonContains('tags', $filter->tag);
+            })
+            ->when($filter?->language, function (Builder $query) use ($filter) {
+                $query->where('language', $filter->language);
             })
             ->orderBy('created_at')
             ->first();

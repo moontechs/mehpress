@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\FeedController;
+use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\PostController;
 use App\Http\Middleware\DetectBlogByHostMiddleware;
 use Illuminate\Support\Facades\Route;
@@ -21,3 +22,7 @@ Route::get('/tags', FeedController::class)
 Route::get('/post/{slug}', PostController::class)
     ->middleware(DetectBlogByHostMiddleware::class)
     ->name('post');
+
+Route::get('/language/{language}', LanguageController::class)
+    ->middleware(DetectBlogByHostMiddleware::class)
+    ->name('language');

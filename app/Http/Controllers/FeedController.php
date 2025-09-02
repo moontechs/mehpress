@@ -7,6 +7,7 @@ use App\Business\NavigationInterface;
 use App\Constants;
 use App\DTO\Navigation\Element;
 use App\DTO\Navigation\Navigation;
+use App\DTO\PostsFilter;
 use Illuminate\Http\Request;
 
 class FeedController extends Controller
@@ -17,26 +18,24 @@ class FeedController extends Controller
         $feedType = $request->route()->getName();
         $postType = $this->getPostTypeFromFeedType($feedType);
         $tag = $request->input('tag');
+        $language = $request->session()->get('language', $blog->default_language);
+        $postsFilter = (new PostsFilter($postType, $tag, $language));
 
-        $period = $request->input('period', $blogService->getLatestPostsPeriod($blog, $postType, $tag));
+        $period = $request->input('period', $blogService->getLatestPostsPeriod($blog, $postsFilter));
 
         [$month, $year] = explode('-', $period);
-        $posts = $blogService->getPostsGroupedByMonthForPeriod($blog, $month, $year, $postType, $tag);
+        $posts = $blogService->getPostsGroupedByMonthForPeriod($blog, $month, $year, $postsFilter);
 
         if ($posts->isEmpty()) {
             abort(404);
         }
 
-        $queryParams = $tag ? ['tag' => $tag] : [];
-
         $navigationPreviousElement = new Element(
             'Past',
-            $navigation->getPreviousFeedUrl($posts->first(), $postType, $queryParams
-            ));
+            $navigation->getPreviousFeedUrl($posts->first(), $postsFilter));
         $navigationNextElement = new Element(
             'Future',
-            $navigation->getNextFeedUrl($posts->first(), $postType, $queryParams
-            ));
+            $navigation->getNextFeedUrl($posts->first(), $postsFilter));
 
         return view('default.feed', [
             'blog' => $blog,

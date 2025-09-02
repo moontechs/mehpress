@@ -28,6 +28,7 @@ class Post extends Model
         'seo_tags',
         'type',
         'blog_id',
+        'language',
     ];
 
     protected $casts = [
@@ -58,5 +59,10 @@ class Post extends Model
     public function isShortType(): bool
     {
         return $this->type === Constants::SHORT_POST_TYPE;
+    }
+
+    public function getLanguage(): string
+    {
+        return $this->language ?? $this->blog->default_language;
     }
 }

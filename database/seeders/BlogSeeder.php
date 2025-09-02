@@ -12,6 +12,10 @@ class BlogSeeder extends Seeder
      */
     public function run(): void
     {
+        if (config('app.env') === 'production') {
+            return;
+        }
+
         $blogs = [
             [
                 'name' => 'MehPress',
@@ -22,6 +26,8 @@ class BlogSeeder extends Seeder
                     ['label' => 'Posts', 'type' => 'link', 'url' => '/posts'],
                     ['label' => 'Shorts', 'type' => 'link', 'url' => '/shorts'],
                 ],
+                'languages' => ['en_US', 'de_DE', 'fr_FR', 'es_ES', 'it_IT', 'pt_PT', 'ru_RU'],
+                'default_language' => 'en_US',
             ],
         ];
 

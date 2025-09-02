@@ -19,10 +19,13 @@ class Blog extends Model
         'host',
         'logo_svg',
         'navigation',
+        'languages',
+        'default_language',
     ];
 
     protected $casts = [
         'navigation' => 'array',
+        'languages' => 'array',
     ];
 
     public function posts(): HasMany

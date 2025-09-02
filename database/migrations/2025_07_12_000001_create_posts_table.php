@@ -19,6 +19,7 @@ return new class extends Migration
             $table->boolean('published')->default(false);
             $table->string('type')->default('post');
             $table->foreignId('blog_id')->constrained('blogs')->cascadeOnDelete();
+            $table->string('language')->nullable();
             $table->timestamps();
         });
     }
