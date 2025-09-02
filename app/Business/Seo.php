@@ -41,6 +41,7 @@ class Seo implements SeoInterface
                 'description' => $post->description,
                 'text' => $post->text,
                 'url' => $post->getUrl(),
+                'ai_generated' => true,
             ]);
         }
 
@@ -57,6 +58,7 @@ class Seo implements SeoInterface
             'meta_name__twitter:card' => 'summary',
             'meta_name__twitter:title' => $post->title,
             'meta_name__twitter:description' => $generatedSeoTags['description'] ?? $post->description,
+            'ai_generated' => $generatedSeoTags['ai_generated'] ?? false,
         ];
 
         $post->save();
@@ -64,13 +66,13 @@ class Seo implements SeoInterface
 
     protected function generateUsingAI(array $data): array
     {
-        if (empty(env('OPENROUTER_API_KEY'))) {
+        if (empty(config('services.openrouter.api_key'))) {
             Log::info('OpenRouter API key is not set. Skipping SEO generation. Please, check your .env file or env variables');
 
             return [];
         }
 
-        $prompt = 'You are an SEO expert. Generate a JSON object that contains a description of a given article'.
+        $prompt = 'You are an expert in SEO. Generate a JSON object containing an SEO-optimized description for the provided article, using the same language as the article.'.
             "Title: {$data['title']}\n".
             "Description: {$data['description']}\n".
             "Text: {$data['text']}\n";
@@ -78,7 +80,6 @@ class Seo implements SeoInterface
         $jsonSchema = [
             'name' => 'SeoTags',
             'strict' => true,
-            'additionalProperties' => false,
             'schema' => [
                 'type' => 'object',
                 'properties' => [
@@ -90,6 +91,7 @@ class Seo implements SeoInterface
                 'required' => [
                     'description',
                 ],
+                'additionalProperties' => false,
             ],
         ];
 

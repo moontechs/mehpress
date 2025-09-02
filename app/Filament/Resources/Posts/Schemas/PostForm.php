@@ -7,7 +7,6 @@ use App\Business\SeoInterface;
 use App\Business\SlugHelper;
 use App\Business\TagInterface;
 use App\Constants;
-use App\Jobs\GenerateSeoTagsUsingAiJob;
 use App\Models\Blog;
 use Filament\Actions\Action;
 use Filament\Forms\Components\KeyValue;
@@ -120,13 +119,6 @@ class PostForm
                             ->tooltip('All tags will be generated automatically and rewritten')
                             ->requiresConfirmation()
                             ->action(fn (Set $set, Get $get) => $set('seo_tags', $seo->getDefaultStructure()))
-                            ->visible(fn (Get $get) => $get('id') !== null)
-                            ->outlined(),
-                        Action::make('generate_seo_tags')
-                            ->label('Request SEO Tags AI generation')
-                            ->tooltip('All tags will be generated automatically and rewritten')
-                            ->requiresConfirmation()
-                            ->action(fn (Set $set, Get $get) => GenerateSeoTagsUsingAiJob::dispatch($get('type'), $get('id')))
                             ->visible(fn (Get $get) => $get('id') !== null)
                             ->outlined(),
                     ]),
