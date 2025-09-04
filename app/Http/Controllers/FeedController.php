@@ -23,24 +23,27 @@ class FeedController extends Controller
 
         $period = $request->input('period', $blogService->getLatestPostsPeriod($blog, $postsFilter));
 
-        [$month, $year] = explode('-', $period);
-        $posts = $blogService->getPostsGroupedByMonthForPeriod($blog, $month, $year, $postsFilter);
-
-        if ($posts->isEmpty()) {
-            abort(404);
+        if ($period) {
+            [$month, $year] = explode('-', $period);
+        } else {
+            [$month, $year] = [1, 2025];
         }
+
+        $posts = $blogService->getPostsGroupedByMonthForPeriod($blog, $month, $year, $postsFilter);
 
         $navigationPreviousElement = new Element(
             'Past',
-            $navigation->getPreviousFeedUrl($posts->first(), $postsFilter));
+            ! $posts->isEmpty() ? $navigation->getPreviousFeedUrl($posts->first(), $postsFilter) : null
+        );
         $navigationNextElement = new Element(
             'Future',
-            $navigation->getNextFeedUrl($posts->first(), $postsFilter));
+            ! $posts->isEmpty() ? $navigation->getNextFeedUrl($posts->first(), $postsFilter) : null
+        );
 
         return view('default.feed', [
             'blog' => $blog,
             'posts' => $posts,
-            'monthAndYear' => $posts->first()->created_at->format('F Y') ?? null,
+            'monthAndYear' => $posts->first()?->created_at->format('F Y') ?? null,
             'navigation' => new Navigation(
                 previous: $navigationPreviousElement,
                 next: $navigationNextElement

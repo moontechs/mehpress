@@ -6,6 +6,7 @@ use App\Constants;
 use App\Filament\Resources\Posts\PostResource;
 use App\Filament\Resources\Posts\Schemas\PostForm;
 use App\Filament\Resources\Posts\Schemas\ShortPostForm;
+use App\Models\Blog;
 use Filament\Resources\Pages\CreateRecord;
 use Filament\Schemas\Schema;
 
@@ -28,6 +29,7 @@ class CreatePost extends CreateRecord
         if ($this->postType === Constants::SHORT_POST_TYPE) {
             $this->form->fill(['type' => Constants::SHORT_POST_TYPE]);
             $this->form->fill(['blog_id' => $this->blogId]);
+            $this->form->fill(['language' => Blog::find($this->blogId)?->default_language]);
         }
     }
 
@@ -48,6 +50,7 @@ class CreatePost extends CreateRecord
 
         if (! empty($this->blogId)) {
             $data['blog_id'] = $this->blogId;
+            $data['language'] = Blog::find($this->blogId)?->default_language;
         }
 
         return $data;

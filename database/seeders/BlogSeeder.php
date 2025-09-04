@@ -26,7 +26,14 @@ class BlogSeeder extends Seeder
                     ['label' => 'Posts', 'type' => 'link', 'url' => '/posts'],
                     ['label' => 'Shorts', 'type' => 'link', 'url' => '/shorts'],
                 ],
-                'languages' => ['en_US', 'de_DE', 'fr_FR', 'es_ES', 'it_IT', 'pt_PT', 'ru_RU'],
+                'footer' => [
+                    ['label' => 'English', 'type' => 'link', 'url' => '/language/en_US'],
+                    ['label' => 'Deutsch', 'type' => 'link', 'url' => '/language/de_DE'],
+                    ['label' => 'Español', 'type' => 'link', 'url' => '/language/es_ES'],
+                    ['label' => 'Português', 'type' => 'link', 'url' => '/language/pt_PT'],
+                    ['label' => 'Русский', 'type' => 'link', 'url' => '/language/ru_RU'],
+                ],
+                'languages' => ['en_US', 'de_DE', 'es_ES', 'pt_PT', 'ru_RU'],
                 'default_language' => 'en_US',
             ],
         ];

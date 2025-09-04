@@ -63,6 +63,21 @@ class BlogForm
                                 ->required(),
                         ])->columns(3),
                     ]),
+
+                Section::make('Footer')
+                    ->columnSpanFull()
+                    ->schema([
+                        Repeater::make('footer')->schema([
+                            TextInput::make('label')
+                                ->required(),
+                            Select::make('type')
+                                ->selectablePlaceholder(false)
+                                ->default(Constants::NAVIGATION_LINK_TYPE)
+                                ->options(array_combine(Constants::NAVIGATION_BUTTON_TYPES, Constants::NAVIGATION_BUTTON_TYPES)),
+                            TextInput::make('url')
+                                ->required(),
+                        ])->columns(3),
+                    ]),
             ]);
     }
 }

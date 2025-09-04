@@ -36,8 +36,8 @@ class ShortPostForm
                     ->hidden(),
                 Select::make('language')
                     ->label('Language')
-                    ->options(function (Get $get) {
-                        $blogId = $get('blog_id') ?? request()->query('blog_id');
+                    ->options(function () {
+                        $blogId = request()->query('blog_id');
                         if (! $blogId) {
                             return [];
                         }
@@ -48,17 +48,8 @@ class ShortPostForm
 
                         return array_combine($blog->languages, $blog->languages);
                     })
-                    ->default(function (Get $get) {
-                        $blogId = $get('blog_id') ?? request()->query('blog_id');
-                        if (! $blogId) {
-                            return null;
-                        }
-                        $blog = Blog::find($blogId);
-
-                        return $blog?->default_language;
-                    })
-                    ->rules(['required', 'regex:/^[a-z]{2}_[A-Z]{2}$/'])
-                    ->required(),
+                    ->hidden()
+                    ->rules(['required', 'regex:/^[a-z]{2}_[A-Z]{2}$/']),
                 Toggle::make('published')
                     ->default(true)
                     ->hidden(),

@@ -17,8 +17,7 @@ class Navigation implements NavigationInterface
             throw new \InvalidArgumentException('Model must be an instance of Post.');
         }
 
-        $tag = $queryParams['tag'] ?? null;
-        $previousPost = $this->blogService->getPostFromPreviousPeriod($model, $filter->type !== Constants::FEED, $filter);
+        $previousPost = $this->blogService->getPostFromPreviousPeriod($model, $filter);
 
         if (! $previousPost) {
             return null;
@@ -35,8 +34,7 @@ class Navigation implements NavigationInterface
             throw new \InvalidArgumentException('Model must be an instance of Post.');
         }
 
-        $tag = $queryParams['tag'] ?? null;
-        $nextPost = $this->blogService->getPostFromNextPeriod($model, $filter->type !== Constants::FEED, $filter);
+        $nextPost = $this->blogService->getPostFromNextPeriod($model, $filter);
 
         if (! $nextPost) {
             return null;

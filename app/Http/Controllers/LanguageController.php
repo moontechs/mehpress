@@ -16,6 +16,6 @@ class LanguageController extends Controller
 
         $request->session()->put('language', $language);
 
-        return redirect('feed');
+        return redirect('/');
     }
 }

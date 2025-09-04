@@ -53,7 +53,7 @@ class BlogService implements BlogServiceInterface
             ->get();
     }
 
-    public function getPostFromPreviousPeriod(Post $post, bool $sameType = false, ?PostsFilter $filter = null): ?Post
+    public function getPostFromPreviousPeriod(Post $post, ?PostsFilter $filter = null): ?Post
     {
         $currentMonth = $post->created_at->month;
         $currentYear = $post->created_at->year;
@@ -65,8 +65,8 @@ class BlogService implements BlogServiceInterface
                 $query->whereYear('created_at', '<=', $currentYear)
                     ->whereMonth('created_at', '<', $currentMonth);
             })
-            ->when($sameType, function (Builder $query) use ($post) {
-                $query->where('type', $post->type);
+            ->when($filter->type, function (Builder $query) use ($filter) {
+                $query->where('type', $filter->type);
             })
             ->when($filter?->tag, function (Builder $query) use ($filter) {
                 $query->whereJsonContains('tags', $filter->tag);
@@ -78,7 +78,7 @@ class BlogService implements BlogServiceInterface
             ->first();
     }
 
-    public function getPostFromNextPeriod(Post $post, bool $sameType = false, ?PostsFilter $filter = null): ?Post
+    public function getPostFromNextPeriod(Post $post, ?PostsFilter $filter = null): ?Post
     {
         $currentMonth = $post->created_at->month;
         $currentYear = $post->created_at->year;
@@ -90,8 +90,8 @@ class BlogService implements BlogServiceInterface
                 $query->whereYear('created_at', '>=', $currentYear)
                     ->whereMonth('created_at', '>', $currentMonth);
             })
-            ->when($sameType, function (Builder $query) use ($post) {
-                $query->where('type', $post->type);
+            ->when($filter->type, function (Builder $query) use ($filter) {
+                $query->where('type', $filter->type);
             })
             ->when($filter?->tag, function (Builder $query) use ($filter) {
                 $query->whereJsonContains('tags', $filter->tag);

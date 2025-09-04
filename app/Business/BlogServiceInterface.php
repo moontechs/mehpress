@@ -13,9 +13,9 @@ interface BlogServiceInterface
 
     public function getPostsGroupedByMonthForPeriod(Blog $blog, string $month, string $year, ?PostsFilter $filter = null): Collection;
 
-    public function getPostFromPreviousPeriod(Post $post, bool $sameType = false, ?PostsFilter $filter = null): ?Post;
+    public function getPostFromPreviousPeriod(Post $post, ?PostsFilter $filter = null): ?Post;
 
-    public function getPostFromNextPeriod(Post $post, bool $sameType = false, ?PostsFilter $filter = null): ?Post;
+    public function getPostFromNextPeriod(Post $post, ?PostsFilter $filter = null): ?Post;
 
     public function getPostBySlug(Blog $blog, string $slug);
 

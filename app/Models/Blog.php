@@ -19,12 +19,14 @@ class Blog extends Model
         'host',
         'logo_svg',
         'navigation',
+        'footer',
         'languages',
         'default_language',
     ];
 
     protected $casts = [
         'navigation' => 'array',
+        'footer' => 'array',
         'languages' => 'array',
     ];
 

@@ -2,24 +2,31 @@
 
 @section('content')
     <div>
-        <div class="group relative flex gap-x-5">
-            <!-- Icon -->
-            <div class="relative group-last:after:hidden after:absolute after:top-8 after:bottom-2 after:start-3 after:w-px after:-translate-x-[0.5px] after:bg-gray-200 dark:after:bg-neutral-700">
-                <div class="relative z-10 size-6 flex justify-center items-center">
-                    <img src="/icons/tabler/outline/calendar-week.svg" alt="{{ $monthAndYear }}" />
+        @if($posts->isEmpty())
+            <div class="text-center py-20">
+                <h2 class="text-2xl font-semibold text-gray-800 dark:text-neutral-200">No posts found</h2>
+                <p class="mt-2 text-gray-600 dark:text-neutral-400">There are no posts available at the moment. Please check back later.</p>
+            </div>
+        @else
+            <div class="group relative flex gap-x-5">
+                <!-- Icon -->
+                <div class="relative group-last:after:hidden after:absolute after:top-8 after:bottom-2 after:start-3 after:w-px after:-translate-x-[0.5px] after:bg-gray-200 dark:after:bg-neutral-700">
+                    <div class="relative z-10 size-6 flex justify-center items-center">
+                        <img src="/icons/tabler/outline/calendar-week.svg" alt="{{ $monthAndYear }}" />
+                    </div>
                 </div>
-            </div>
-            <!-- End Icon -->
+                <!-- End Icon -->
 
-            <!-- Right Content -->
-            <div class="grow pb-8 group-last:pb-0">
-                <p class="font-semibold text-lg text-gray-800 dark:text-neutral-200">
-                    {{ $monthAndYear }}
-                </p>
+                <!-- Right Content -->
+                <div class="grow pb-8 group-last:pb-0">
+                    <p class="font-semibold text-lg text-gray-800 dark:text-neutral-200">
+                        {{ $monthAndYear }}
+                    </p>
 
+                </div>
+                <!-- End Right Content -->
             </div>
-            <!-- End Right Content -->
-        </div>
+        @endif
 
         @foreach($posts as $post)
             <div class="group relative flex gap-x-5">
