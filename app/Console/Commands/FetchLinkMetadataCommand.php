@@ -2,7 +2,9 @@
 
 namespace App\Console\Commands;
 
+use App\Business\LinkParserInterface;
 use App\Models\Link;
+use App\Models\Post;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use Kovah\HtmlMeta\Exceptions\InvalidUrlException;
@@ -16,6 +18,11 @@ class FetchLinkMetadataCommand extends Command
                             {--chunk=50 : Number of links to process in each chunk}';
 
     protected $description = 'Fetch metadata for links in the database';
+
+    public function __construct(protected LinkParserInterface $linkParser)
+    {
+        parent::__construct();
+    }
 
     public function handle(): int
     {
@@ -65,6 +72,8 @@ class FetchLinkMetadataCommand extends Command
                     $link->update(['metadata' => $metaTags]);
                     $updated++;
                     $this->info("✓ Updated metadata for: {$link->url}");
+
+                    $this->syncLinkToTranslatedPosts($link);
                 } else {
                     Log::warning('Empty meta tags', [
                         'url' => $link->url,
@@ -84,5 +93,28 @@ class FetchLinkMetadataCommand extends Command
         $this->info("- Failed: {$failed}");
 
         return self::SUCCESS;
+    }
+
+    protected function syncLinkToTranslatedPosts(Link $link): void
+    {
+        $postsWithThisUrl = Post::where('text', 'LIKE', '%'.$link->url.'%')
+            ->whereDoesntHave('links', function ($query) use ($link) {
+                $query->where('links.id', $link->id);
+            })
+            ->get();
+
+        if ($postsWithThisUrl->isEmpty()) {
+            return;
+        }
+
+        $synced = 0;
+        foreach ($postsWithThisUrl as $post) {
+            $this->linkParser->updateModelLinks($post, $post->text);
+            $synced++;
+        }
+
+        if ($synced > 0) {
+            $this->comment("  ↳ Synced link to {$synced} additional posts");
+        }
     }
 }

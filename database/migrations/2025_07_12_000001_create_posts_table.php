@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('type')->default('post');
             $table->foreignId('blog_id')->constrained('blogs')->cascadeOnDelete();
             $table->string('language')->nullable();
+            $table->foreignId('parent_id')->nullable()->constrained('posts')->cascadeOnDelete();
             $table->timestamps();
         });
     }
