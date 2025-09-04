@@ -1,5 +1,33 @@
 @extends('default.layout')
 
+@section('meta')
+    @foreach($post->seo_tags as $seoTag => $value)
+        @if(\Illuminate\Support\Str::startsWith($seoTag, 'meta_'))
+            @php
+                $seoTag = str_replace('meta_', '', $seoTag);
+                $seoTagsParts = explode('__', $seoTag, 2);
+            @endphp
+
+            <meta {{ $seoTagsParts[0] }}="{{ $seoTagsParts[1] }}" content="{{  $value }}">
+
+            @continue
+        @endif
+
+        @if(\Illuminate\Support\Str::startsWith($seoTag, 'link_'))
+            @php
+                $seoTag = str_replace('link_', '', $seoTag);
+                $seoTagsParts = explode('__', $seoTag, 2);
+            @endphp
+
+            <link {{ $seoTagsParts[0] }}="{{ $seoTagsParts[1] }}" content="{{  $value }}">
+
+            @continue
+        @endif
+
+        <meta {{ $seoTag }}="{{ $value }}">
+    @endforeach
+@endsection
+
 @section('content')
     <!--    Title -->
     @if($post->isPostType())

@@ -17,7 +17,7 @@ class Seo implements SeoInterface
     {
         return [
             'title' => '',
-            'link_rel' => 'canonical',
+            'link_rel__canonical' => '',
             'meta_name__description' => '',
             'meta_name__robots' => 'index, follow',
             'robots' => 'index, follow',
@@ -48,7 +48,7 @@ class Seo implements SeoInterface
         $post->seo_tags = [
             'title' => $post->title,
             'meta_name__description' => $generatedSeoTags['description'] ?? $post->description,
-            'link_rel' => 'canonical',
+            'link_rel__canonical' => $post->getUrl(),
             'meta_name__robots' => 'index, follow',
             'robots' => 'index, follow',
             'meta_property__og:title' => $post->title,
