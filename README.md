@@ -1,61 +1,148 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# MehPress
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+MehPress is like WordPress but instead of "Hello World" the first post is "Whatever…".
 
-## About Laravel
+MehPress is like WordPress but SEO stands for "Sorta, Eventually, Okay".
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+**JUST ENOUGH!**
+* basic templates, slightly broken
+* editor crashes only occasionally
+* support forum answers in 3–6 months
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Core Business Features
 
-## Learning Laravel
+### 🌐 Multi-Blog Management
+**Run unlimited blogs from one dashboard** - Each blog gets its own domain, branding, and identity while sharing your content management system.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- **Domain-based routing**: Each blog automatically responds to its configured domain
+- **Brand customization**: Unique logos, navigation menus, and footer content per blog
+- **Centralized management**: Control all your publications from one admin interface
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### 📝 Smart Content Creation
+**Two content types optimized for different engagement patterns** - Create both long-form posts and short-form content to maximize audience reach.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- **Posts**: Full articles with rich markdown formatting for in-depth content
+- **Shorts**: Quick thoughts and updates for rapid engagement
+- **Period-based organization**: Content automatically organized by month/year for easy navigation
+- **Link enrichment**: URLs automatically enhanced with previews and metadata
 
-## Laravel Sponsors
+### 🌍 Multi-Language Publishing
+**Expand your global reach with intelligent translation** - Create content once and publish in multiple languages with AI assistance.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+- **Automatic translation**: AI-powered translation service using OpenRouter
+- **Content relationships**: Translated posts maintain connections to originals  
+- **Language switching**: Readers can easily switch between available languages
+- **SEO optimization**: Each language version gets optimized meta tags
 
-### Premium Partners
+### 🔗 Intelligent Link Management
+**Turn every link into an engagement opportunity** - Automatically enhance external links with rich previews and metadata.
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+- **Automatic metadata extraction**: Links get titles, descriptions, and images automatically
+- **Visual previews**: Rich link cards improve reader engagement
+- **Background processing**: Link metadata fetched without slowing down publishing
+- **Link relationships**: Track which posts reference which external content
 
-## Contributing
+### 🎯 Enhanced SEO
+**Maximize discoverability with intelligent optimization** - Let AI handle the technical SEO while you focus on creating great content.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- **Smart meta tags**: AI generates optimized titles, descriptions, and keywords
+- **Content analysis**: AI analyzes your content for SEO opportunities  
+- **Bulk optimization**: Process multiple posts automatically
+- **Performance tracking**: Monitor SEO improvements over time
 
-## Code of Conduct
+### 🏷️ Flexible Content Organization
+**Help readers find exactly what they're looking for** - Organize content with intuitive tagging and filtering systems.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- **Dynamic tagging**: Flexible tag system adapts to your content
+- **Tag-based filtering**: Readers can browse content by topic
+- **Cross-blog tagging**: Share tag systems across multiple blogs
+- **Content discovery**: Related content suggestions based on tags
 
-## Security Vulnerabilities
+## Getting Started
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Quick Installation
+
+**Prerequisites**: PHP 8.4+, Composer, Node.js/npm
+
+1. **Set up the project**:
+   ```bash
+   git clone <repository-url>
+   cd mehpress
+   cp .env.example .env
+   composer install && pnpm install
+   ```
+
+2. **Configure your database**:
+   ```bash
+   touch database/database.sqlite
+   php artisan migrate --seed
+   php artisan key:generate
+   ```
+
+3. **Start publishing**:
+   ```bash
+   composer run dev  # Starts server, queue worker, and frontend build
+   ```
+
+4. **Access your dashboard**: Visit `/admin` to create your first blog and start publishing.
+
+### Production Deployment
+
+**Docker**: Ready-to-deploy Docker configuration included:
+```bash
+docker build -t mehpress .
+docker run -p 80:80 mehpress
+```
+
+**Manual deployment**: Supports any PHP 8.4+ hosting environment with SQLite, MySQL, or PostgreSQL.
+
+## How Your Readers Experience MehPress
+
+### Content Discovery
+- **Main feed** (`/`) - Latest content from all types in chronological order
+- **Posts feed** (`/posts`) - Long-form articles with month/year navigation  
+- **Shorts feed** (`/shorts`) - Quick updates and thoughts
+- **Tag browsing** (`/tags`) - Find content by topic or category
+- **Individual posts** (`/post/{slug}`) - Full article view with related content
+- **Language switching** (`/language/{code}`) - Switch between available languages
+
+### Content Management Interface  
+- **Dashboard** (`/admin`) - Overview of all blogs and content performance
+- **Blog management** (`/admin/blogs`) - Configure domains, branding, and settings
+- **Content creation** (`/admin/posts`) - Write, edit, and publish posts and shorts
+- **Translation tools** - Manage multi-language content relationships
+- **SEO optimization** - Bulk AI-powered SEO tag generation
+- **Link management** - Monitor and enhance external link metadata
+
+## Configuration
+
+### Essential Setup for Business Features
+
+**AI-Powered Features**: Set your OpenRouter API key to enable automatic translation and SEO optimization:
+```env
+OPENROUTER_API_KEY=your_key_here
+```
+
+**Multi-Blog Setup**: Configure your blogs with:
+- **Domain mapping**: Each blog responds to its own domain or subdomain
+- **Brand identity**: Upload SVG logos and customize color schemes  
+- **Navigation menus**: Create custom navigation for each publication
+- **Footer content**: Add copyright, contact, and social media links
+- **Language support**: Configure available languages and default language per blog
+
+### Available Management Commands
+
+**Content Enhancement**:
+```bash
+php artisan app:links:fetch-metadata    # Enhance all links with rich previews
+php artisan app:generate-seo-ai         # Generate AI-powered SEO tags for posts  
+php artisan app:translate-posts         # Translate posts to additional languages
+```
+
+**Bulk Operations**: 
+Process content in bulk through the admin interface with AI assistance for translation and SEO optimization.
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+GNU AGPLv3 License
