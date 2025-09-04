@@ -15,7 +15,7 @@ class GenerateSeoTagsUsingAi extends Command
      *
      * @var string
      */
-    protected $signature = 'app:seo:generate-seo-tags {--force : Force regeneration of SEO tags even if ai_generated is true}';
+    protected $signature = 'app:seo:generate-seo-tags {--use-ai: Use AI to generate description} {--force : Force regeneration of SEO tags even if ai_generated is true}';
 
     /**
      * The console command description.
@@ -54,7 +54,7 @@ class GenerateSeoTagsUsingAi extends Command
             $this->info("Processing post ID {$post->id}: {$post->title}");
 
             try {
-                $seo->generateForPost($post, true);
+                $seo->generateForPost($post, $this->option('use-ai'));
                 $this->comment("✓ Successfully generated SEO tags for post ID {$post->id}");
             } catch (ClientException $e) {
                 Log::error('Failed to generate SEO tags', [

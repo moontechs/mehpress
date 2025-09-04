@@ -111,15 +111,13 @@ class PostForm
                         ->label('SEO')
                         ->columnSpanFull()
                         ->keyLabel('Key')
-                        ->valueLabel('Value')
-                        ->default($seo->getDefaultStructure()),
+                        ->valueLabel('Value'),
                     Actions::make([
                         Action::make('restore_seo_tags')
                             ->label('Restore default SEO tags')
                             ->tooltip('All tags will be generated automatically and rewritten')
                             ->requiresConfirmation()
                             ->action(fn (Set $set, Get $get) => $set('seo_tags', $seo->getDefaultStructure()))
-                            ->visible(fn (Get $get) => $get('id') !== null)
                             ->outlined(),
                     ]),
                 ]),

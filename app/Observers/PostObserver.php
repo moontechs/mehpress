@@ -29,14 +29,16 @@ class PostObserver
         if ($post->text) {
             $this->linkParser->updateModelLinks($post, $post->text);
         }
-
-        $this->seo->generateForPost($post);
     }
 
     public function creating(Post $post): void
     {
         if ($post->type === Constants::SHORT_POST_TYPE) {
             $this->updateShortPostFields($post);
+        }
+
+        if ($post->seo_tags) {
+            $post->seo_tags = array_filter($post->seo_tags, fn ($key) => ! empty($key), ARRAY_FILTER_USE_KEY);
         }
     }
 
