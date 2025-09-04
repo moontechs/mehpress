@@ -51,6 +51,10 @@ class PostObserver
         if ($post->isDirty(['tags'])) {
             Cache::forget(Constants::CACHE_UNIQUE_TAGS_KEY);
         }
+
+        if ($post->seo_tags) {
+            $post->seo_tags = array_filter($post->seo_tags, fn ($key) => ! empty($key), ARRAY_FILTER_USE_KEY);
+        }
     }
 
     public function updated(Post $post): void
