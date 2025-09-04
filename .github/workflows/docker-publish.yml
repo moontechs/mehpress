@@ -13,11 +13,6 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        platform:
-          - linux/amd64
-          - linux/arm64
     permissions:
       contents: read
       packages: write
@@ -46,76 +41,28 @@ jobs:
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
+            type=raw,value=latest,enable={{is_default_branch}}
           labels: |
             org.opencontainers.image.description=MehPress
             org.opencontainers.image.vendor=MoonTechs
+            org.opencontainers.image.version={{version}}
+            org.opencontainers.image.revision=${{ github.sha }}
 
-      - name: Build and push by digest
-        id: build
+      - name: Build and push multi-platform image
         uses: docker/build-push-action@v5
         with:
           context: .
-          platforms: ${{ matrix.platform }}
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          outputs: type=image,name=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }},push-by-digest=true,name-canonical=true,push=true
-          cache-from: type=gha,scope=build-${{ matrix.platform }}
-          cache-to: type=gha,scope=build-${{ matrix.platform }},mode=max
+          cache-from: type=gha,scope=build-multiplatform
+          cache-to: type=gha,scope=build-multiplatform,mode=max
 
-      - name: Export digest
+      - name: Output image details
         run: |
-          mkdir -p /tmp/digests
-          digest="${{ steps.build.outputs.digest }}"
-          touch "/tmp/digests/${digest#sha256:}"
-
-      - name: Upload digest
-        uses: actions/upload-artifact@v4
-        with:
-          name: digests-${{ strategy.job-index }}
-          path: /tmp/digests/*
-          if-no-files-found: error
-          retention-days: 1
-
-  merge:
-    runs-on: ubuntu-latest
-    needs: build
-    permissions:
-      contents: read
-      packages: write
-
-    steps:
-      - name: Download digests
-        uses: actions/download-artifact@v4
-        with:
-          path: /tmp/digests
-          pattern: digests-*
-          merge-multiple: true
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Log in to Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Extract metadata
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          tags: |
-            type=ref,event=tag
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=semver,pattern={{major}}
-          labels: |
-            org.opencontainers.image.description=MehPress
-            org.opencontainers.image.vendor=MoonTechs
-
-      - name: Create manifest list and push
-        working-directory: /tmp/digests
-        run: |
-          docker buildx imagetools create $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
-            $(printf '${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@sha256:%s ' *)
+          echo "Successfully built and pushed multi-platform image:"
+          echo "Repository: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}"
+          echo "Tags:"
+          echo "${{ steps.meta.outputs.tags }}" | sed 's/^/  - /'
+          echo "Platforms: linux/amd64, linux/arm64"
