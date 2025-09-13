@@ -35,6 +35,11 @@ class LinkRenderer implements NodeRendererInterface
         $metadata = $link->metadata;
 
         $title = $metadata['og:title'] ?? $metadata['title'] ?? $linkText;
+
+        if (! empty($linkText)) {
+            $title = $linkText;
+        }
+
         $description = $metadata['og:description'] ?? $metadata['description'] ?? '';
         $image = $metadata['og:image'] ?? null;
         $siteName = $metadata['og:site_name'] ?? '';

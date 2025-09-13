@@ -19,9 +19,10 @@ namespace App\Models{
  * @property string $host
  * @property string|null $logo_svg
  * @property array<array-key, mixed> $navigation
- * @property string $footer
+ * @property array<array-key, mixed> $footer
  * @property array<array-key, mixed> $languages
  * @property string $default_language
+ * @property array<array-key, mixed> $cron_commands
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Post> $posts
@@ -31,6 +32,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Blog newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Blog query()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Blog whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Blog whereCronCommands($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Blog whereDefaultLanguage($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Blog whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Blog whereFooter($value)
@@ -84,11 +86,15 @@ namespace App\Models{
  * @property string $type
  * @property int $blog_id
  * @property string|null $language
+ * @property int|null $parent_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Blog $blog
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Link> $links
  * @property-read int|null $links_count
+ * @property-read Post|null $parent
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Post> $translations
+ * @property-read int|null $translations_count
  * @method static \Database\Factories\PostFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Post newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Post newQuery()
@@ -98,6 +104,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Post whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Post whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Post whereLanguage($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Post whereParentId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Post wherePublished($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Post whereSeoTags($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Post whereSlug($value)

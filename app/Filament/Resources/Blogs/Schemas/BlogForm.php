@@ -85,6 +85,51 @@ class BlogForm
                             ->columns(3)
                             ->nullable(),
                     ]),
+
+                Section::make('Cron Settings')
+                    ->columnSpanFull()
+                    ->schema([
+                        Repeater::make('cron_commands')
+                            ->label('Console Commands for Cron (Ordered)')
+                            ->schema([
+                                Select::make('command')
+                                    ->label('Command')
+                                    ->options([
+                                        'app:links:fetch-metadata' => 'app:links:fetch-metadata',
+                                        'app:seo:generate-seo-tags' => 'app:seo:generate-seo-tags',
+                                        'app:translate-posts' => 'app:translate-posts',
+                                    ])
+                                    ->searchable()
+                                    ->required()
+                                    ->placeholder('Select a console command')
+                                    ->columnSpan(2),
+
+                                TextInput::make('arguments')
+                                    ->label('Arguments')
+                                    ->placeholder('e.g., --queue=default --timeout=300')
+                                    ->helperText('Optional command arguments and options (space-separated)')
+                                    ->nullable()
+                                    ->columnSpan(2),
+
+                                Textarea::make('description')
+                                    ->label('Description')
+                                    ->placeholder('Brief description of what this command does...')
+                                    ->helperText('Optional description for documentation purposes')
+                                    ->nullable()
+                                    ->columnSpanFull()
+                                    ->rows(2),
+                            ])
+                            ->addActionLabel('Add Command')
+                            ->reorderable()
+                            ->collapsible()
+                            ->itemLabel(fn (array $state): ?string => ($state['command'] ?? 'New Command').
+                                (! empty($state['arguments']) ? ' '.$state['arguments'] : '')
+                            )
+                            ->helperText('Add console commands in the order they should be executed. You can drag to reorder them.')
+                            ->default([])
+                            ->nullable()
+                            ->columns(4),
+                    ]),
             ]);
     }
 }

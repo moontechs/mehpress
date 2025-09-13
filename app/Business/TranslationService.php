@@ -106,6 +106,7 @@ class TranslationService
                    - URLs and links
                    - Image paths and filenames
                    - Code blocks and inline code
+                   - Quoted text (markdown blockquotes)
                    - HTML tags
                    - Markdown syntax characters
                    - Names of people, products, brands, or proper nouns

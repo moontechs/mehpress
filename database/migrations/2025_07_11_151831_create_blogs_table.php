@@ -21,6 +21,7 @@ return new class extends Migration
             $table->jsonb('footer')->default('[]');
             $table->jsonb('languages')->default('["en_US"]');
             $table->string('default_language')->default('en_US');
+            $table->jsonb('cron_commands')->default('[]');
             $table->timestamps();
         });
     }
