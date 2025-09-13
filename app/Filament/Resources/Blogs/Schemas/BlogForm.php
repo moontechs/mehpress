@@ -39,12 +39,15 @@ class BlogForm
                             ->helperText('Enter locale codes (language_COUNTRY) that will be available for this blog')
                             ->rules(['required', 'array', 'min:1'])
                             ->nestedRecursiveRules(['regex:/^[a-z]{2}_[A-Z]{2}$/'])
+                            ->live()
+                            ->reactive()
                             ->required(),
                         Select::make('default_language')
                             ->label('Default Language')
                             ->placeholder('Select default language')
                             ->options(fn ($get) => array_combine($get('languages') ?? ['en_US'], $get('languages') ?? ['en_US']))
                             ->live()
+                            ->reactive()
                             ->rules(['required', 'regex:/^[a-z]{2}_[A-Z]{2}$/'])
                             ->required(),
                     ])->columns(2),
@@ -61,7 +64,9 @@ class BlogForm
                                 ->options(array_combine(Constants::NAVIGATION_BUTTON_TYPES, Constants::NAVIGATION_BUTTON_TYPES)),
                             TextInput::make('url')
                                 ->required(),
-                        ])->columns(3),
+                        ])->default([])
+                            ->columns(3)
+                            ->nullable(),
                     ]),
 
                 Section::make('Footer')
@@ -76,7 +81,9 @@ class BlogForm
                                 ->options(array_combine(Constants::NAVIGATION_BUTTON_TYPES, Constants::NAVIGATION_BUTTON_TYPES)),
                             TextInput::make('url')
                                 ->required(),
-                        ])->columns(3),
+                        ])->default([])
+                            ->columns(3)
+                            ->nullable(),
                     ]),
             ]);
     }
