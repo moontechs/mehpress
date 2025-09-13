@@ -1,0 +1,4 @@
+jobs:
+  - spec: "* */3 * * *"
+    command: "cd /app && php artisan app:blog:execute-cron"
+    name: "Blog Cron Jobs"

@@ -56,11 +56,21 @@ RUN pnpm run build
 FROM dunglas/frankenphp:1-php8.4
 
 # Install system dependencies
+# Install system dependencies and cronn
 RUN apt-get update && apt-get install -y \
     git \
     zip \
     unzip \
     make \
+    curl \
+    && echo "$(dpkg --print-architecture)" \
+    && ARCH="$(dpkg --print-architecture)"; \
+       curl -L -o /tmp/cronn.deb "https://github.com/umputun/cronn/releases/download/v1.3.0/cronn_v1.3.0_linux_${ARCH}.deb" \
+    && echo '#!/bin/bash\nexit 0' > /usr/bin/systemctl \
+    && chmod +x /usr/bin/systemctl \
+    && dpkg -i /tmp/cronn.deb || true \
+    && rm /usr/bin/systemctl \
+    && rm /tmp/cronn.deb \
     && rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions
@@ -90,7 +100,7 @@ RUN install-php-extensions \
 # Configure PHP for production
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 
-# Configure OPcache for production (without preload during build)
+# Configure OPcache for production (preload will be enabled after app files are copied)
 RUN { \
     echo 'opcache.enable=1'; \
     echo 'opcache.enable_cli=1'; \
@@ -105,8 +115,6 @@ RUN { \
     echo 'opcache.fast_shutdown=1'; \
     echo 'opcache.enable_file_override=1'; \
     echo 'opcache.optimization_level=0xffffffff'; \
-    echo 'opcache.preload=/app/preload.php'; \
-    echo 'opcache.preload_user=www-data'; \
 } > /usr/local/etc/php/conf.d/opcache.ini
 
 # Additional production PHP optimizations
@@ -138,6 +146,10 @@ COPY --from=node-builder --chown=www-data:www-data /app/public/build ./public/bu
 
 # Copy application files
 COPY --chown=www-data:www-data . .
+
+# Enable opcache preloading with production-safe preload file
+RUN echo 'opcache.preload=/app/bootstrap/preload.php' >> /usr/local/etc/php/conf.d/opcache.ini \
+    && echo 'opcache.preload_user=www-data' >> /usr/local/etc/php/conf.d/opcache.ini
 
 # Copy custom Caddyfile
 COPY --chown=root:root docker/Caddyfile /etc/caddy/Caddyfile

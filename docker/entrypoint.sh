@@ -36,4 +36,14 @@ chmod -R 775 storage bootstrap/cache
 php artisan filament:assets
 ln -sf /app/storage/app/public /app/public/storage
 
-exec su -s /bin/sh www-data -c "$*"
+# Start cronn in background
+cronn -c /app/docker/cron-config.yml &
+
+# Start FrankenPHP
+if [ $# -eq 0 ]; then
+    # Default: start FrankenPHP server
+    exec frankenphp run --config /etc/caddy/Caddyfile
+else
+    # Custom command provided
+    exec "$@"
+fi
