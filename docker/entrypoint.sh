@@ -30,13 +30,17 @@ if [ -n "$TARGET_UID" ] && [ "$CURRENT_WWW_DATA_UID" != "$TARGET_UID" ]; then
     usermod -o -u "$TARGET_UID" www-data
 fi
 
-mkdir -p storage/app/public storage/logs storage/framework/cache storage/framework/sessions storage/framework/views bootstrap/cache
-chown -R www-data:www-data storage bootstrap/cache
+mkdir -p storage/app/public storage/logs storage/framework/cache storage/framework/sessions storage/framework/views bootstrap/cache database/mount
+chown -R www-data:www-data storage bootstrap/cache database/mount
 chmod -R 775 storage bootstrap/cache
 php artisan filament:assets
 ln -sf /app/storage/app/public /app/public/storage
 
-# Start cronn in background
+if [ ! -f database/mount/database.sqlite ]; then
+    touch database/mount/database.sqlite
+    chown www-data:www-data database/mount/database.sqlite
+fi
+
 cronn -c /app/docker/cron-config.yml &
 
 # Start FrankenPHP
