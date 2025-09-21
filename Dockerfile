@@ -161,10 +161,14 @@ RUN mkdir -p storage/app/public storage/logs storage/framework/cache storage/fra
     && chmod -R 775 storage bootstrap/cache \
     && chmod +x /usr/local/bin/docker-entrypoint.sh
 
-# Configure FrankenPHP
-#ENV FRANKENPHP_CONFIG="worker ./public/index.php"
-#ENV APP_ENV=production
-#ENV APP_DEBUG=false
+# Set environment variables defaults (can be overridden at runtime)
+ENV SERVER_NAME=:80 \
+    APP_ENV=production \
+    APP_DEBUG=false \
+    LOG_CHANNEL=stderr \
+    CACHE_STORE=file \
+    SESSION_DRIVER=files \
+    DB_DATABASE=database/mount/database.sqlite
 
 HEALTHCHECK --interval=60s --timeout=3s --start-period=5s --retries=3 \
     CMD curl -f http://localhost/up || exit 1
