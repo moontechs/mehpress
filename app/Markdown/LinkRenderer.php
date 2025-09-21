@@ -23,7 +23,7 @@ class LinkRenderer implements NodeRendererInterface
 
         $link = Link::where('url', $url)->first();
 
-        if ($link && $link->metadata) {
+        if ($this->readyToRenderRich($link)) {
             return $this->renderRichLink($link, $linkText);
         }
 
@@ -69,5 +69,18 @@ class LinkRenderer implements NodeRendererInterface
         }
 
         return new HtmlElement('a', $attrs, $childRenderer->renderNodes($node->children()));
+    }
+
+    private function readyToRenderRich(?Link $link): bool
+    {
+        if (! $link || ! $link->metadata) {
+            return false;
+        }
+
+        if (empty($link->metadata['og:title']) && empty($link->metadata['og:description'])) {
+            return false;
+        }
+
+        return true;
     }
 }

@@ -3,11 +3,11 @@
 // Production-safe Laravel preload file
 // Only preload core production classes, avoid dev dependencies
 
-if (!file_exists(__DIR__ . '/../vendor/autoload.php')) {
+if (! file_exists(__DIR__.'/../vendor/autoload.php')) {
     return;
 }
 
-require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__.'/../vendor/autoload.php';
 
 // Define core Laravel classes to preload
 $coreClasses = [
@@ -51,9 +51,9 @@ foreach ($coreClasses as $class) {
 
             // Skip database seeders and other dev-only files
             if ($filename && is_readable($filename) &&
-                !str_contains($filename, '/database/seeders/') &&
-                !str_contains($filename, '/database/factories/') &&
-                !str_contains($filename, '/tests/')) {
+                ! str_contains($filename, '/database/seeders/') &&
+                ! str_contains($filename, '/database/factories/') &&
+                ! str_contains($filename, '/tests/')) {
                 opcache_compile_file($filename);
             }
         } catch (Exception $e) {
