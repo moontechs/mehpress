@@ -2,7 +2,9 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
-        <title>{{ $blog->title }}</title>
+        @if(isset($blog) && $blog->title)
+            <title>{{ $blog->title }}</title>
+        @endif
 
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         @yield('meta')
@@ -14,7 +16,9 @@
     </head>
     <body>
 
-    @include('default.header')
+    @if(isset($blog))
+        @include('default.header')
+    @endif
 
     <main id="content">
         <div class="flex min-h-screen justify-center w-full">
@@ -22,7 +26,9 @@
                 <div class="mt-10 sm:mt-14">
                     @yield('content')
 
-                    @include('default.footer')
+                    @if(isset($blog))
+                        @include('default.footer')
+                    @endif
                 </div>
             </div>
         </div>
