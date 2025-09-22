@@ -7,12 +7,20 @@ docker-server-php:
 	php artisan optimize:clear && \
 	php artisan optimize && \
 	php artisan filament:optimize && \
-	php artisan migrate --seed --force && \
+	php artisan migrate --force && \
 	exec frankenphp run --config /etc/caddy/Caddyfile
 
 docker-server-queue:
 	php artisan queue:work --tries=3 --timeout=90
 
+generate-app-key:
+	php artisan key:generate --show
+
+create-admin:
+	php artisan make:filament-user
+
 .PHONY: \
 	docker-server-php \
-	docker-server-queue
+	docker-server-queue \
+	generate-app-key \
+	create-admin

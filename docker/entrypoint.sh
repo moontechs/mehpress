@@ -46,7 +46,7 @@ cronn -c /app/docker/cron-config.yml &
 # Start FrankenPHP
 if [ $# -eq 0 ]; then
     # Default: start FrankenPHP server
-    exec frankenphp run --config /etc/caddy/Caddyfile
+    exec make docker-server-php
 else
     # Custom command provided
     exec "$@"

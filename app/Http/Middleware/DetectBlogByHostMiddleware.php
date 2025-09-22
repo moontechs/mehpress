@@ -16,7 +16,7 @@ class DetectBlogByHostMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $host = $request->header('Host');
+        $host = $request->header('X-Forwarded-Host', $request->header('Host'));
 
         $blog = Blog::where('host', '=', 'https://'.$host)
             ->orWhere('host', '=', 'http://'.$host)

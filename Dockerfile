@@ -167,7 +167,7 @@ ENV SERVER_NAME=:80 \
     APP_DEBUG=false \
     LOG_CHANNEL=stderr \
     CACHE_STORE=file \
-    SESSION_DRIVER=files \
+    SESSION_DRIVER=file \
     DB_DATABASE=database/mount/database.sqlite
 
 HEALTHCHECK --interval=60s --timeout=3s --start-period=5s --retries=3 \
