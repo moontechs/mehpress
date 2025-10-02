@@ -32,11 +32,11 @@
     <!--    Title -->
     @if($post->isPostType())
         <div>
-            <h1 class="text-3xl font-bold text-gray-800 sm:text-4xl dark:text-white">
+            <h1 class="text-3xl font-bold text-black sm:text-4xl dark:text-white">
                 {{ $post->title }}
             </h1>
 
-            <p class="mt-3 text-gray-600 dark:text-neutral-400">
+            <p class="mt-3 text-gray-800 dark:text-neutral-400">
                 {{ $post->description }}
             </p>
         </div>
