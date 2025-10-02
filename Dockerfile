@@ -163,6 +163,7 @@ RUN mkdir -p storage/app/public storage/logs storage/framework/cache storage/fra
 
 # Set environment variables defaults (can be overridden at runtime)
 ENV SERVER_NAME=:80 \
+    LARAVEL_CLOUD=1 \
     APP_ENV=production \
     APP_DEBUG=false \
     LOG_CHANNEL=stderr \
